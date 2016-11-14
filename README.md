@@ -53,3 +53,28 @@ Quelques exemples dans Wikipedia:
 ...et cette référence de page Wikidata (Q22995945) se trouve aussi dans [Wikipedia](https://fr.wikipedia.org/wiki/Fichier:911_-_H%C3%B4tel_du_Commerce_10-12_Place_de_Verdun_-_La_Rochelle.jpg) donc dans DBPedia ; de là, on devrait pouvoir obtenir l'URL de cette photo avec une requête...
 
 Après analyse des données, trouvez les services qui permettent d'exécutez vos requêtes SPARQL pour extraire les données nécessaires (latitude, longitude, photos, autres infos).
+
+### Application
+
+Faites l'application que vous jugerez intéressante. Elle doit au moins :
+
+*   permettre de naviguer dans les données : affichage des infos d'un monument avec photo, accès par région, département, etc...
+*   les présenter dans un Map (GoogleMap, OpenStreetMap, etc).
+*   délivrer des données statistiques sous forme de tableaux HTML et graphiques faits en SVG (répartition par région, etc)
+*   permettre d'extraire avec FOP un rapport PDF contenant des graphiques SVG, en le produisant en XSLFO grâce à XSLT
+
+### Déroulement du projet
+
+Groupes : 4 personnes maxi
+
+Date de début : 27/10/2016
+
+Date de fin : 13/12/2016
+
+Date de soutenance : 14/12/2016
+
+Durée : à définir
+
+Livrables : un rapport (2 pages) décrivant les aspect techniques de votre projet et les fonctionalités principales, une appli qui marche, les sources (dans un repo GIT par exemple, à défaut dans un zip).
+
+Soutenance : présenter une appli qui marche pendant la soutenance ; vous devez aussi pouvoir montrer le code de votre appli ; chaque membre du groupe doit présenter son travail personnel.
