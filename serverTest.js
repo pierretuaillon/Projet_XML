@@ -37,17 +37,26 @@ connection.get("/db/merimee-MH.xml", function(res) {
 });
 
 /*Préparation de la requête ici on recupere toute les REF */
+/*
 var query = connection.query("//csv_data/row/REF");
     query.on("error", function(err) {
         console.log("An error occurred: " + err);
     });
-
+*/
 /*Lancement de la requete*/
 /*
 item correspond à la valeur de la requete ici : <REF> numRef </REF>
 hits le numéro de l'élement
 offset le nombre d'elements total ici 44665
 */
+
+var Requete = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/DPT="10" order by $x/TICO return $x/TICO';
+
+var query = connection.query(Requete);
+    query.on("error", function(err) {
+        console.log("An error occurred: " + err);
+    });
+
 
 query.each(function(item, hits, offset) {
     console.log("Item %d out of %d:", offset, hits);
