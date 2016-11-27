@@ -1,0 +1,27 @@
+<html>
+<script src="http://localhost:4040/node_modules/socket.io-client/socket.io.js"></script>
+<script>
+( function() {
+	var champ1;
+	var champ2;
+	var boutonSocketIO;
+
+	var envoyerMessage = function() {
+		var socket = io.connect('http://localhost:4040');
+		socket.emit('monTypeDeMessage',{'champ1':champ1.value,'champ2':champ2.value});
+	}
+
+	window.addEventListener("load", function() {
+		champ1 = document.getElementById("champ1");
+		champ2 = document.getElementById("champ2");
+		boutonSocketIO = document.getElementById("boutonSocketIO");
+		boutonSocketIO.addEventListener("click", envoyerMessage);
+	});
+} )();
+</script>
+<body>
+	Champ 1&nbsp;<input type="text" id="champ1"><br>
+	Champ 2&nbsp;<input type="text" id="champ2"><br>
+	<input type="button" id="boutonSocketIO" value="boutonSocketIO">
+</body>
+</html>

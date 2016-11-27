@@ -1,29 +1,14 @@
-var http = require('http');
-
-/*************
-Base de donnée
-*************/
-
-var existdb = require("./node_modules/easy-exist/index");
+/*
+tuto
+http://www.developper-jeux-video.com/node-js-socket-io-exemple/
+*/
 
 
-//Création session
-var exist = require('easy-exist');
-
-// connect
-var db = new exist.DB('http://localhost', {
-    username: "admin",
-    password: "admin"
+var io = require("./node_modules/socket.io");
+var sockets = io.listen(4040);
+sockets.on('connection', function (socket) {
+  socket.on('monTypeDeMessage', function (data) {
+    // faire ce qu'il y a à faire
+    console.log("message :" + data.champ1 + " / " + data.champ2);
+  });
 });
-
-body = '<message><body>Hello World</body></message>'
-
-
-
-var server = http.createServer(function(req, res) {
-
-
-});
-
-server.listen(1337);
-console.log("Serveur web lancé sur localhost:1337 ...");

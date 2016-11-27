@@ -1,35 +1,27 @@
-<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>Socket.io</title>
-    </head>
- 
-    <body>
-        <h1>Communication avec socket.io !</h1>
-
-        <p><input type="button" value="Embêter le serveur" id="poke" /></p>
-
-
-        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <script>
-            var socket = io.connect('http://localhost:4040');
-
-            // On demande le pseudo au visiteur...
-            var pseudo = prompt('Quel est votre pseudo ?');
-            // Et on l'envoie avec le signal "petit_nouveau" (pour le différencier de "message")
-            socket.emit('petit_nouveau', pseudo);
-
-            // On affiche une boîte de dialogue quand le serveur nous envoie un "message"
-            socket.on('message', function(message) {
-                alert('Le serveur a un message pour vous : ' + message);
-            })
-
-            // Lorsqu'on clique sur le bouton, on envoie un "message" au serveur
-            $('#poke').click(function () {
-                socket.emit('message', 'Salut serveur, ça va ?');
-            })
-        </script>
-    </body>
+<script src="http://localhost:4040/node_modules/socket.io"></script>
+<script>
+( function() {
+  var champ1;
+  var champ2;
+  var boutonSocketIO;
+  
+  var envoyerMessage = function() {
+    var socket = io.connect('http://localhost:4040');
+    socket.emit('monTypeDeMessage',{'champ1':champ1.value,'champ2':champ2.value});
+  }
+  
+  window.addEventListener("load", function() {
+    champ1 = document.getElementById("champ1");
+    champ2 = document.getElementById("champ2");
+    boutonSocketIO = document.getElementById("boutonSocketIO");
+    boutonSocketIO.addEventListener("click", envoyerMessage);
+  });
+} )();
+</script>
+<body>
+  Champ 1&nbsp;<input type="text" id="champ1"><br>
+  Champ 2&nbsp;<input type="text" id="champ2"><br>
+  <input type="button" id="boutonSocketIO" value="boutonSocketIO">
+</body>
 </html>
