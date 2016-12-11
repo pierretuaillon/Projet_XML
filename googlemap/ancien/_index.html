@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Openstreetmap</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+		<script type="text/javascript">
+
+			var ADRS = "Wault (quai du) 17 ; Barre (rue de la)";
+			var COM  = "Lille";
+			var CODE = "59350"
+
+			<!-- Si l adresse donné est en 2 parties on prend la premiere  -->
+			var premiereADR = ADRS.split(";")[0];
+
+			document.write("<p> premiereADR : "+premiereADR+"</p>");
+
+			<!-- On récupére les index de la partie de l adresse sous parenthéses  -->
+			var indexPremierePar = premiereADR.indexOf("(");
+			var indexDeuxiemePar = premiereADR.indexOf(")")+1;
+
+			<!-- On récupere le morceau sous parenthéses  -->
+			var substring = premiereADR.substring(indexPremierePar, indexDeuxiemePar);
+
+			document.write("<p> substring : "+substring+"</p>");
+
+			<!-- On supprime le morceau et on le met   -->
+			var ADRSFinal = premiereADR.replace(substring, "");
+			ADRSFinal = substring.replace("(", "").replace(")", "") + " " + ADRSFinal + " " + COM;
+
+			document.write("<p> ADRSFinal : "+ADRSFinal+"</p>");
+
+		</script>
+	</body>
+
+</html>
