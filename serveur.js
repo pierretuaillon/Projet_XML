@@ -40,7 +40,7 @@ resultatRequeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml
 
 
 //Execution des requetes Regions
-var executeRequeteToutesLesRegions = connection.query(resultatRequeteToutesLesRegions).results(function (err, query_result) {
+var executeRequeteToutesLesRegions = connection.query(resultatRequeteToutesLesRegions, function (err, query_result) {
     resultatRequeteToutesLesRegions = query_result["result"];
 }); 
 
