@@ -1,0 +1,26 @@
+<script type="text/javascript" src="__header.js"></script>
+
+<!-- Inclusion du module socket.io -->
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+// Connexion au socket serveur
+var socket = io.connect();
+
+
+
+//Resultat par référence;
+var requeteToutesRegions;
+
+
+
+</script>
+<form name="myForm" ng-submit="foo()" novalidate>
+    <label>REF : </label>
+    <input name="reference" type="text" required ng-minlength="2" ng-maxlength="20" />
+    <div ng-messages="myForm.reference.$error" ng-messages-include="erreurs.html" ng-if="myForm.$submitted"></div>
+        
+    <input type="submit" value="Envoyer" />
+</form>
+
+<script type="text/javascript" src="__footer.js"></script>
