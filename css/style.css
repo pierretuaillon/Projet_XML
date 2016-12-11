@@ -2,6 +2,10 @@ body{
 	padding-top: 90px;
 }
 
+.container {
+    width: 100%;
+}
+
 /** Menu **/
 .icons {
 	color: white;

@@ -1,5 +1,177 @@
 <script type="text/javascript" src="__header.js"></script>
 
+<!-- Page Content -->
+<div class="container contenu">
+	<div class="jumbotron">
+		<center>
+			<h1>Bonjour à vous !</h1>
+			<p><i>Grâce cette application web, vous pourrez faire des recherches sur les Immeubles protégés au titre des Monuments Historiques présents dans la base de données mais également en récupérer des statistiques et des PDF.</br>
+		    Vous trouverez ci-dessous un rappel du contexte du projet et une description des élèves ayant participé au projet.</i></p>
+	    </center>
+	</div>
 
+	<div class="Enonce">
+               
+        <h3>Enoncé</h3>
+       
+        <p><i class="icon-chevron-right"></i> On dispose de données des
+          	<a href="https://www.data.gouv.fr/fr/datasets/monuments-historiques-liste-des-immeubles-proteges-au-titre-des-monuments-historiques/">Immeubles protégés au titre des Monuments Historiques</a>
+          (total France en 2014 : 44 318 monuments).
+          On vous demande de réaliser une application 
+          Web de consultation de ces données.
+        </p>
+       
+        <p><i class="icon-chevron-right"></i> Liste des données :
+        </p>
+       
+       <ul>
+          
+         	<li>Référence de l'édifice dans la base Mérimée : &lt;REF&gt;</li> 
+          
+          	<li>Type d'étude : &lt;ETUD&gt; : recensement immeubles MH, avec éventuellement la mention label
+             Xxe
+          	</li>
+          
+          	<li>localisation de l'édifice : &lt;LOCA&gt; ou &lt;REG&gt; + &lt;DEPT&gt; + &lt;COM&gt;</li>
+          
+          	<li>Code INSEE : &lt;INSEE&gt;</li>
+          
+         	<li>Appellation courante de l'édifice : &lt;TICO&gt;</li>
+          
+          	<li>Adresse : &lt;ADRS&gt; : adresse, n° de la voie, type de voie, nom de la voie</li>
+          
+          	<li>Statut propriété : &lt;STAT&gt; : type de propriétaire par catégorie ; pas de noms</li>
+          
+          	<li>Affectataire : &lt;AFFE&gt; : utile pour les propriétés de l'Etat, mentionne le nom du ministère affectataire</li>
+          
+          	<li>Précisions sur la protection : &lt;PPRO&gt; article 1er de l'arrêté de protection + cadastre + nature et date de la protection</li>
+          
+          	<li>Date de protection : &lt;DPRO&gt;</li>
+          
+          	<li>Architecte ou maître d'oeuvre : &lt;AUTR&gt;</li>
+          
+          	<li>Période de construction : &lt;SCLE&gt;</li>
+          
+       	</ul>
+       
+       
+      	<h4>Conditions de réalisation</h4>
+       
+       	<p><i class="icon-chevron-right"></i> Ces données doivent être chargées dans une base de données native XML ; vous utiliserez <a href="http://basex.org/">BaseX</a> ou <a href="http://www.exist-db.org/">eXist</a>; toutes les requêtes d'extraction des données seront faites en <b>XQuery</b>. L'utilisation d'une base de données relationnelle est proscrite.
+       	</p>
+       
+       	<p><i class="icon-chevron-right"></i> Vous devrez héberger une application Web dans un serveur Node.js.
+          Rien de doit être précalculé (ne pas stocker les résultats dans
+          des fichiers), votre application doit accéder aux données dynamiquement.
+          L'utilisation de PHP est proscrite.
+       	</p>
+       
+       	<p><i class="icon-chevron-right"></i> 
+          L'application cliente pourra utiliser des frameworks modernes (comme Angular 2
+          ou <a href="http://aurelia.io/">Aurelia</a>)
+          et CSS pour styler l'application. Les graphiques <b>devront</b> être réalisés en SVG.
+          Javascript pourra être utilisé pour les affichages sur une carte (GoogleMap).
+       	</p>
+       
+       
+       	<h4>Sources de données externes</h4>
+       
+       	<p><i class="icon-chevron-right"></i> Utilisez DBPedia/Wikidata pour compléter dynamiquement vos données.
+          Les requêtes seront faites en <b>SPARQL</b>.
+       	</p>
+       
+       	<p><i class="icon-chevron-right"></i> Vous pouvez également recourir à d'autres sources de données
+          que vous jugeriez utile à votre application (pas nécessairement
+          interrogeables en SPARQL, du moment que celles provenant de DBPedia ou Wikidata
+          ont été interrogées avec SPARQL).
+       	</p>
+       
+       	<p><i class="icon-chevron-right"></i> Quelques exemples dans Wikipedia:</p>
+       
+       	<ul>
+          
+          	<li><a href="https://fr.wikipedia.org/wiki/Monument_historique_(France)">Monuments historiques</a></li>
+          
+          	<li><a href="https://fr.wikipedia.org/wiki/Liste_des_monuments_historiques_de_la_Charente-Maritime">Liste
+                des monuments historiques de la Charente-Maritime</a>
+             (potentiellement plusieurs listes)
+          	</li>
+          
+          	<li><a href="https://fr.wikipedia.org/wiki/Liste_des_monuments_historiques_de_La_Rochelle">Liste des monuments historiques de La Rochelle</a></li>
+          
+       	</ul>
+       
+       	<p><i class="icon-chevron-right"></i> ...et dans DBPedia : </p>
+       
+       	<ul>
+          
+          	<li><a href="http://fr.dbpedia.org/page/Liste_des_monuments_historiques_de_La_Rochelle">on y trouve la référence de l'exemple XML (PA17000048)</a></li>
+          
+          	<li>et en <a href="http://fr.dbpedia.org/data/Liste_des_monuments_historiques_de_La_Rochelle.ntriples">ntriples</a></li>
+          
+       	</ul>
+       
+       	<p><i class="icon-chevron-right"></i> ...et dans Wikidata :</p>
+       
+       	<ul>
+          
+          	<li><a href="https://www.wikidata.org/wiki/Q22995945">la page qui correspond à cette même référence</a> (PA17000048)</li>
+          
+          	<li><a href="https://www.mediawiki.org/wiki/Wikibase/Indexing/RDF_Dump_Format">Wikidata infos RDF</a></li>
+          
+          	<li><a href="https://query.wikidata.org/">Wikidata Query Service</a></li>
+          
+       	</ul>
+       
+       	<p><i class="icon-chevron-right"></i> ...et cette référence de page Wikidata (Q22995945) se trouve aussi dans <a href="https://fr.wikipedia.org/wiki/Fichier:911_-_H%C3%B4tel_du_Commerce_10-12_Place_de_Verdun_-_La_Rochelle.jpg">Wikipedia</a> 
+          donc dans DBPedia ; de là, on devrait pouvoir obtenir l'URL de cette photo avec une
+          requête...
+       	</p>
+       
+       	<p><i class="icon-chevron-right"></i> Après analyse des données, trouvez les services qui permettent d'exécutez vos requêtes
+          SPARQL pour extraire les données nécessaires
+          (latitude, longitude, photos, autres infos).
+       	</p>
+    </div>
+    <div class = "row">
+    	<div class="col-md-3">
+      		<div class="thumbnail">
+        		<img src="/img/Pierre_Tuaillon.jpg" alt="Pierre TUAILLON" class="img-circle imgProfil">
+        		<div class="caption">
+          			<h3>Pierre TUAILLON</h3>
+          			<p></p>
+        		</div>
+      		</div>
+    	</div>
+    	<div class="col-md-3">
+      		<div class="thumbnail">
+        		<img src="/img/Nicholas_BARNINI.jpg" alt="Nicholas BARNINI" class="img-circle imgProfil">
+        		<div class="caption">
+          			<h3>Nicholas BARNINI</h3>
+          			<p></p>
+        		</div>
+      		</div>
+    	</div>
+    	<div class="col-md-3">
+      		<div class="thumbnail">
+        		<img src="/img/Nathan_Moncade.jpg" alt="Nathan MONCADE" class="img-circle imgProfil">
+        		<div class="caption">
+          			<h3>Nathan MONCADE</h3>
+          			<p></p>
+        		</div>
+      		</div>
+    	</div>
+    	<div class="col-md-3">
+      		<div class="thumbnail">
+        		<img src="/img/Manon_INGRASSIA.jpg" alt="Manon INGRASSIA" class="img-circle imgProfil">
+        		<div class="caption">
+          			<h3>Manon INGRASSIA</h3>
+          			<p></p>
+        		</div>
+      		</div>
+    	</div>
+    </div>
+
+</div>
 
 <script type="text/javascript" src="__footer.js"></script>

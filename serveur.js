@@ -1,7 +1,7 @@
 /* Module de connection de wolfgangmm*/
 /*lien git https://github.com/wolfgangmm/existdb-node */
 
-var Connection = require("existdb-node/index.js");
+var Connection = require("./node_modules/existdb-node/index.js");
 
 /*option de connection à la base de donnée */
 /*

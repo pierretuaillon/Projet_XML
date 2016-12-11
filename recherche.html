@@ -7,12 +7,21 @@
 // Connexion au socket serveur
 var socket = io.connect();
 
-
-
 //Resultat par référence;
 var requeteToutesRegions;
 
+// Gestion de la réception du résultat de la requête
+function notification(content, requete){
+	if(requete=='regions'){
+		requeteToutesRegions=content;
+	}
+}
 
+// recuperation des messages "Region" du socket serveur
+socket.on('resultatRequeteToutesRegions', function(x) { notification(x,'regions'); });
+
+// recuperation des messages "communes" du socket serveur
+socket.on('resultatRequeteToutesLesCommunes'
 
 </script>
 <form name="myForm" ng-submit="foo()" novalidate>
