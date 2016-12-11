@@ -67,9 +67,9 @@ var listener = io.listen(server);
 console.log("serveur connecté, port 4040");
 
 function start(socket){
-    socket.on('called', function(){
-        console.log("Request received.");
+    socket.on('ref', function(){
+        console.log("Requete ref");
         // Permet d'envoyer le résultat de la requête
-        listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+        listener.sockets.emit('resultatRequete', resultatRequeteToutesLesRegions);
     });
 }

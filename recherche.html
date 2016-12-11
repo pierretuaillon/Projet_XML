@@ -12,15 +12,25 @@ var socket = io.connect();
 //Resultat par référence;
 var requeteToutesRegions;
 
+ window.onload = function() {
+        document.myform.action = requete();
+    }
+	
+function requete() {
+	socket.emit('ref');//('ref'),document.getElementById("ref"));
+	   	 socket.on(('resultatRequete',message), function(message) {
+			document.getElementById("resultat").innerHTML=message;// createHTML(message);
+	  	});
+}
 
 
 </script>
 <form name="myForm" ng-submit="foo()" novalidate>
     <label>REF : </label>
-    <input name="reference" type="text" required ng-minlength="2" ng-maxlength="20" />
+    <input name="reference" id="ref" type="text" required ng-minlength="2" ng-maxlength="20" />
     <div ng-messages="myForm.reference.$error" ng-messages-include="erreurs.html" ng-if="myForm.$submitted"></div>
         
     <input type="submit" value="Envoyer" />
 </form>
-
+<p id="resultat"></p>
 <script type="text/javascript" src="__footer.js"></script>
