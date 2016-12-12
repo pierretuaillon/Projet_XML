@@ -63,7 +63,8 @@ var executeRequeteToutesLesCommunes = connection.query(requeteToutesLesCommunes,
     resultatRequeteToutesLesCommunes = query_result["result"];
 });
 */
-var query = connection.query(requeteToutesLesRegions);
+var query;
+query = connection.query(requeteToutesLesRegions);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
@@ -71,7 +72,7 @@ query.each(function(item, hits, offset) {
     resultatRequeteToutesLesRegions.push(item);
 });
 
-var query = connection.query(requeteTousLesDepartements);
+query = connection.query(requeteTousLesDepartements);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
@@ -79,7 +80,7 @@ query.each(function(item, hits, offset) {
     resultatRequeteTousLesDepartements.push(item);
 });
 
-var query = connection.query(requeteToutesLesCommunes);
+query = connection.query(requeteToutesLesCommunes);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
@@ -107,6 +108,7 @@ var server = http.createServer(app);
 server.listen(4040);
 
 var listener = io.listen(server);
+
 console.log("serveur connecté, port 4040");
 listener.sockets.on('connection', function (socket) {
     console.log('Un client est connecté !');
@@ -117,9 +119,11 @@ listener.sockets.on('connection', function (socket) {
 		console.log(msg);
 		socket.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
 	});
-	//socket.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
-	socket.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
-	//socket.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
+	
+
+	listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+	listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+    listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 	//socket.emit('resultatsListes', 'finit');
 });
 /*

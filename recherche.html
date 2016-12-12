@@ -10,11 +10,11 @@
 var socket = io.connect('http://localhost:4040');
 
 //Variable global
-
 //Resultat par référence;
 var requeteToutesRegions;
 var requeteCommune;
 var requeteDept;
+
 
 // Gestion de la réception du résultat de la requête
 function notification(content, requete){
@@ -32,7 +32,7 @@ function notification(content, requete){
 function envoieChoix(id){
 	var choixSelect = document.getElementById(id);
 }
- document.onload = function() {
+ window.onload = function() {
         requete();
     }
  /*window.onload = function() {
@@ -47,32 +47,38 @@ function requeteDept() {
 	//socket.emit('requeteDept', 'wesh envoie moi les dept');
 }
 
-			
+
 // recuperation des messages "Region" du socket serveur
-socket.on('resultatRequeteToutesLesRegions', function(x) {
+/*socket.on('resultatRequeteToutesLesRegions', function(x) {
+
 	notification(x,'regions');
-	document.getElementById("resultat").innerHTML+=(' regions : '+x);
+	//document.getElementById("resultat").innerHTML+=(' regions : '+x);
 	addOptions('selectRegion', 'Region', requeteToutesRegions);
-	});
+
+});
+
+socket.emit('accuseReceptionRegion');
+*/
 socket.on('resultatRequeteTousLesDepartements', function(x) {
+	//alert('resultatRequeteTousLesDepartements');
 	notification(x,'dept');
-	document.getElementById("resultat").innerHTML+=(' depts : '+x);
-	addOptions('selectDept', 'Dept', requeteCommune);
-	});
+	//document.getElementById("resultat").innerHTML+=(' dept : '+x);
+	addOptions('selectDept', 'Dept', requeteDept);
+});
 socket.on('resultatRequeteToutesLesCommunes', function(x) {
+	
 	notification(x,'communes');
-	document.getElementById("resultat").innerHTML+=(' communes : '+x);
-	addOptions('selectCommune', 'Commune', requeteDept);
-	});
+	//document.getElementById("resultat").innerHTML+=(' communes : '+x);
+	addOptions('selectCommune', 'Commune', requeteCommune);
+});
+/*
 socket.on('resultatListes', function(x) {
-	document.getElementById("resultat").innerHTML+=(' reception listes : '+requeteToutesRegions+'<br>'+requeteDept+'<br>'+requeteCommune);
+	//document.getElementById("resultat").innerHTML+=(' reception listes : '+requeteToutesRegions+'<br>'+requeteDept+'<br>'+requeteCommune);
 	addOptions('selectRegion', 'Region', requeteToutesRegions);
-	addOptions('selectDept', 'Dept', requeteCommune);
-	addOptions('selectCommune', 'Commune', requeteDept);
-	});
-
-
-function addOptions(id, genese, req){
+	addOptions('selectDept', 'Dept', requeteDept);
+	addOptions('selectCommune', 'Commune', requeteCommune);
+});
+*/
 /* API Option
 optionElementReference
 A reference to the newly created HTMLOptionElement.
@@ -85,22 +91,20 @@ A boolean that sets the selected attribute, the default is false. A value of tru
 selected
 A boolean that sets the option's selected state, the default is false (not selected). If omitted, even if the defaultSelected argument is true, the option is not selected.
 */
-	
+
+function addOptions(id, genese, req){
+
 	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
 
 	var List = document.getElementById(id);
 
 	var elOption= new Array(req.length);
 
-
-
-
 	for(i=0;i<req.length;i++){
 
 		elOption[i]=new Option(req[i], ("r"+i), false, false);
 	}
 
- 	
 	var i, n;
 	n = elOption.length;
  
