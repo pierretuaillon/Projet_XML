@@ -38,8 +38,8 @@ function envoieChoix(id){
     }
 	
 function requete() {
-	socket.emit('ref', 'Nothing');//('ref'),document.getElementById("ref"));
-	   	 socket.on(('resultatRequete',message), function(message) {
+	socket.emit('called', 'Nothing');//('ref'),document.getElementById("ref"));
+	   	 socket.on(('resultatRequeteToutesLesRegions',message), function(message) {
 			document.getElementById("resultat").innerHTML=message;// createHTML(message);
 	  	});
 }

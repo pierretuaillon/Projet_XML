@@ -35,7 +35,7 @@ var io = require('socket.io');
 
 
 // resultat par region
-var resultatRequeteToutesLesRegions='vide';
+var resultatRequeteToutesLesRegions;
 // resultat par departement
 var resultatRequeteTousLesDepartements;
 // resultat par commune
@@ -52,7 +52,7 @@ var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, f
 	console.log("génération liste régions");
     resultatRequeteToutesLesRegions = query_result["result"];
 }); 
-
+console.log(resultatRequeteToutesLesRegions);
 //Execution des requetes Departement
 var executeRequeteTousLesDepartements = connection.query(requeteTousLesDepartements, function (err, query_result) {
     resultatRequeteTousLesDepartements = query_result["result"];
@@ -92,7 +92,7 @@ listener.sockets.on('connection', function (socket) {
 function start(socket){
 
     //se déclenche au clique sur un  bouton
-    socket.on('called', function(message){
+    socket.on('called', function(){
         console.log("Request received.");
         // Permet d'envoyer le résultat de la requête
         listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
