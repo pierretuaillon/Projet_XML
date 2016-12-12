@@ -32,17 +32,31 @@ var io = require('socket.io');
 
 // resultat par region
 var resultatRequeteToutesLesRegions;
-
+// resultat par departement
+var resultatRequeteTousLesDepartements;
+// resultat par commune
+var resultatRequeteToutesLesCommunes;
 
 //Requêtes
-resultatRequeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
-
+requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
+requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
+requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
 
 
 //Execution des requetes Regions
-var executeRequeteToutesLesRegions = connection.query(resultatRequeteToutesLesRegions, function (err, query_result) {
+var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, function (err, query_result) {
     resultatRequeteToutesLesRegions = query_result["result"];
 }); 
+
+//Execution des requetes Departement
+var executeRequeteTousLesDepartements = connection.query(requeteTousLesDepartements, function (err, query_result) {
+    resultatRequeteTousLesDepartements = query_result["result"];
+}); 
+
+// Execution des requetes "Commune"
+var executeRequeteToutesLesCommunes = connection.query(requeteToutesLesCommunes, function (err, query_result) {
+    resultatRequeteToutesLesCommunes = query_result["result"];
+});
 
 
 
@@ -67,9 +81,17 @@ var listener = io.listen(server);
 console.log("serveur connecté, port 4040");
 
 function start(socket){
+
+    //se déclenche au clique sur un  bouton
     socket.on('called', function(){
         console.log("Request received.");
         // Permet d'envoyer le résultat de la requête
         listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+
+        listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+
+        listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
+
+
     });
 }

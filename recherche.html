@@ -4,32 +4,96 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
+
 // Connexion au socket serveur
 var socket = io.connect();
 
+//Variable global
+
 //Resultat par référence;
 var requeteToutesRegions;
+var requeteCommune;
 
 // Gestion de la réception du résultat de la requête
 function notification(content, requete){
 	if(requete=='regions'){
 		requeteToutesRegions=content;
+	}else if (requete == 'commune'){
+		requeteCommune = content;
 	}
+}
+
+//fonction appelé au changement dans les listes
+function envoieChoix(id){
+	var choixSelect = document.getElementById(id);
 }
 
 // recuperation des messages "Region" du socket serveur
 socket.on('resultatRequeteToutesRegions', function(x) { notification(x,'regions'); });
 
-// recuperation des messages "communes" du socket serveur
-socket.on('resultatRequeteToutesLesCommunes'
+
+function addOptions(id, genese, req){
+
+/* API Option
+optionElementReference
+A reference to the newly created HTMLOptionElement.
+text
+A string that sets the content of the element, i.e. the displayed text.
+value
+A string that sets the value attribute.
+defaultSelected
+A boolean that sets the selected attribute, the default is false. A value of true does not set the option to selected. 
+selected
+A boolean that sets the option's selected state, the default is false (not selected). If omitted, even if the defaultSelected argument is true, the option is not selected.
+*/
+
+	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
+
+	var List = document.getElementById(id);
+
+	var elOption= new Array(req.length);
+
+	for(i=0;i<req.length;i++){
+
+		elOption[i]=new Option(req[i], ("r"+i), false, false);
+	}
+
+ 	
+	var i, n;
+	n = elOption.length;
+ 
+	for (i=0; i<n; i++){
+		List.options.add(elOption[i]);
+	}
+
+    document.getElementById(genese).disabled="false";
+}
+
+function initialize(){
+
+}
+
+
+initialize();
 
 </script>
-<form name="myForm" ng-submit="foo()" novalidate>
-    <label>REF : </label>
-    <input name="reference" type="text" required ng-minlength="2" ng-maxlength="20" />
-    <div ng-messages="myForm.reference.$error" ng-messages-include="erreurs.html" ng-if="myForm.$submitted"></div>
-        
-    <input type="submit" value="Envoyer" />
-</form>
+
+<div class="container contenu">
+    <div class="page-header">
+    	<h1>Interrogation de la base de données des Immeubles protégés au titre des Monuments Historiques : </h1>
+    </div>
+
+
+    <div class="row">
+    	<div class="col-md-6">
+    		<!-- Formulaire de navigation dans les donnees "Region"-->
+    		<h3>Régions - <input id="Region" class="btnGenese" type="button" value="Générer" onclick="addOptions('idChxType', 'Region', requeteToutesRegions)" /></h3>
+    		<form  name="frmSearchType">
+			<span>Parmi les différentes Régions :</span> <select id="idChxType" name="ChoixType" onchange="envoieChoix('idChxType');">
+				<option value="" selected="selected">-- Faites votre choix --</option>
+			</select></form></br>
+    	</div>
+    </div>
+</div>
 
 <script type="text/javascript" src="__footer.js"></script>
