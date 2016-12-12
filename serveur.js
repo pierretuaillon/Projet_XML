@@ -45,24 +45,8 @@ var resultatRequeteToutesLesCommunes = [];
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
-/*
-//Execution des requetes Regions
-var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, function (err, query_result) {
-	//if (err) throw err;
-	console.log("génération liste régions");
-    resultatRequeteToutesLesRegions = query_result["result"];
-});
-console.log('res1 : '+resultatRequeteToutesLesRegions);
-//Execution des requetes Departement
-var executeRequeteTousLesDepartements = connection.query(requeteTousLesDepartements, function (err, query_result) {
-    resultatRequeteTousLesDepartements = query_result["result"];
-});
 
-// Execution des requetes "Commune"
-var executeRequeteToutesLesCommunes = connection.query(requeteToutesLesCommunes, function (err, query_result) {
-    resultatRequeteToutesLesCommunes = query_result["result"];
-});
-*/
+
 var query;
 query = connection.query(requeteToutesLesRegions);
 query.on("error", function(err) {
@@ -114,37 +98,25 @@ listener.sockets.on('connection', function (socket) {
     console.log('Un client est connecté !');
 	socket.on('called', function(msg) {
 		console.log(msg);
+		listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+		listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+		listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 	});
-	socket.on('requeteDept', function(msg) {
+	socket.on('requete2', function(msg) {
 		console.log(msg);
-		socket.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+		listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+		listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+		listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
+		listener.sockets.emit('resultatRequete2', resultatRequeteToutesLesRegions);
+		
 	});
-	
 
-	listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
-	listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
-    listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
-	//socket.emit('resultatsListes', 'finit');
   socket.on('PDF', function (msg) {
       //  generationPDF();
     });
 
 });
-/*
-function start(socket){
 
-    //se déclenche au clique sur un  bouton
-    socket.on('called', function(){
-        console.log("Request received.");
-        // Permet d'envoyer le résultat de la requête
-        listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
-
-        listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
-
-        listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
-
-    });
-}*/
 
 
 /***************FOP*********************

@@ -3,7 +3,7 @@
 <!-- Inclusion du module socket.io -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 <script src="http://localhost/socket.io/socket.io.js"></script>
-<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+<script src="http://localhost:4040/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 
 // Connexion au socket serveur
@@ -35,30 +35,29 @@ function envoieChoix(id){
  window.onload = function() {
         requete();
     }
- /*window.onload = function() {
-        requete();
-    }*/
 	
 function requete() {
 	socket.emit('called', 'wesh envoie moi les regions et tt stp');
 }	
-function requeteDept() {
-	document.getElementById('resultat').innerHTML='requete dept ! ';
-	//socket.emit('requeteDept', 'wesh envoie moi les dept');
+function requete2() {
+	document.getElementById("resultat").innerHTML="requete ! : ";
+	socket.emit('requete2', 'wesh renvoie moi tout ça stp');
 }
 
-
 // recuperation des messages "Region" du socket serveur
-/*socket.on('resultatRequeteToutesLesRegions', function(x) {
+socket.on('resultatRequeteToutesLesRegions', function(x) {
 
 	notification(x,'regions');
 	//document.getElementById("resultat").innerHTML+=(' regions : '+x);
 	addOptions('selectRegion', 'Region', requeteToutesRegions);
 
 });
+socket.on('resultatRequete2', function(x) {
+	document.getElementById("resultat").innerHTML+=x;
+});
 
-socket.emit('accuseReceptionRegion');
-*/
+//socket.emit('accuseReceptionRegion');
+
 socket.on('resultatRequeteTousLesDepartements', function(x) {
 	//alert('resultatRequeteTousLesDepartements');
 	notification(x,'dept');
@@ -71,14 +70,9 @@ socket.on('resultatRequeteToutesLesCommunes', function(x) {
 	//document.getElementById("resultat").innerHTML+=(' communes : '+x);
 	addOptions('selectCommune', 'Commune', requeteCommune);
 });
-/*
-socket.on('resultatListes', function(x) {
-	//document.getElementById("resultat").innerHTML+=(' reception listes : '+requeteToutesRegions+'<br>'+requeteDept+'<br>'+requeteCommune);
-	addOptions('selectRegion', 'Region', requeteToutesRegions);
-	addOptions('selectDept', 'Dept', requeteDept);
-	addOptions('selectCommune', 'Commune', requeteCommune);
-});
-*/
+
+
+
 /* API Option
 optionElementReference
 A reference to the newly created HTMLOptionElement.
@@ -97,7 +91,7 @@ function addOptions(id, genese, req){
 	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
 
 	var List = document.getElementById(id);
-
+	
 	var elOption= new Array(req.length);
 
 	for(i=0;i<req.length;i++){
@@ -109,7 +103,7 @@ function addOptions(id, genese, req){
 	n = elOption.length;
  
 	for (i=0; i<n; i++){
-		List.options.add(elOption[i]);
+		List[i]=(elOption[i]);
 	}
 
     document.getElementById(genese).disabled="false";
@@ -132,7 +126,7 @@ initialize();
     </div>
 
     <div class="row">
-    	<div class="col-md-6"><button onclick="requeteDept()" >Actualiser</button>
+    	<div class="col-md-6"><button onclick="requete2()" >Actualiser</button>
     		<form  name="frmSearchType">
     		<!-- Formulaire de navigation dans les donnees "Region"-->
     		<h3>Régions</h3>
@@ -152,5 +146,6 @@ initialize();
     	</div>
     </div>
 </div>
-<p id="resultat"></p>
+<p id="resultat">vide<br></p>
+<p id="vide"><br><br><br><br></p>
 <script type="text/javascript" src="__footer.js"></script>
