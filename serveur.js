@@ -122,7 +122,7 @@ listener.sockets.on('connection', function (socket) {
 	//socket.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 	//socket.emit('resultatsListes', 'finit');
   socket.on('PDF', function (msg) {
-        generationPDF();
+      //  generationPDF();
     });
 
 });
@@ -143,7 +143,7 @@ function start(socket){
 }*/
 
 
-/***************FOP*********************/
+/***************FOP*********************
 socket.on('requeteDept', function(msg) {
 
 function generationPDF(){
@@ -178,30 +178,10 @@ function generationPDF(){
 	resultat+='Critère : Recherche selon blabla ';
 	resultat+="\n";
 	resultat+='</fo:block>';
-	resultat+="\n";/*
 	resultat+="\n";
-	resultat+='<xsl:for-each select="ONISEP_ETABLISSEMENT/etablissement">';
-	resultat+="\n";*/
 	resultat+='<fo:block font-family="Times" font-size="13pt" text-align="justify">';
 	resultat+="\n";
-	resultat+="Hello <xsl:value-of select=\"name\" />";/*
-	if(quelR=='t'){
-		if(surQuelRecherche=="Ecole d\'art"){
-			resultat+='Ecole d\'art ne fonctionne pas (technique : même avec les deux \'\' de basex)';
-		}else if (surQuelRecherche=="Ecole d\'ingénieurs"){
-			resultat+='Ecole d\'ingénieurs ne fonctionne pas (technique même avec les deux \'\' de basex)';
-		} else if (surQuelRecherche=="École supérieure du professorat et de l\'éducation"){
-			resultat+='École supérieure du professorat et de l\'éducation ne fonctionne pas (technique même avec les deux \'\' de basex)';
-		} else {
-			resultat+='<xsl:value-of select="type[text()=\''+surQuelRecherche+'\']/.."/>';
-		}
-	}else if(quelR=='c'){
-		resultat+='<xsl:value-of select="commune[text()=\''+surQuelRecherche+'\']/.."/>';
-	} else if(quelR=='a'){
-		resultat+='<xsl:value-of select="academie[text()=\''+surQuelRecherche+'\']/.."/>';
-	} else if (quelR=='s'){
-		resultat+='<xsl:value-of select="statut[text()=\''+surQuelRecherche+'\']/.."/>';
-	}*/
+	resultat+="Hello <xsl:value-of select=\"name\" />";
 	resultat+='</fo:block>';
 	resultat+="\n";
 	resultat+="\n";
@@ -256,10 +236,7 @@ function processXSLT(){
 }
 
 function executionDeFOP(){
-  /* MARCHE sous windows
-  cmd= "fop " + "afterxslt.fo "+ "resultatRequete.pdf";
-  exec(cmd, print, "fop-2.0");
-  */
+
 
   // Marche sous Linux
   var contenuDuPDF= child_process.execFile('fop', ['afterxslt.fo', 'resultatRequete.pdf'],['fop-2.0'], function(error, stdout, stderr){
@@ -270,4 +247,4 @@ function executionDeFOP(){
       }
   });
 		window.open('resultatRequete.pdf');
-}
+}*/
