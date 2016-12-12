@@ -35,24 +35,24 @@ var io = require('socket.io');
 
 
 // resultat par region
-var resultatRequeteToutesLesRegions;
+var resultatRequeteToutesLesRegions = [];
 // resultat par departement
-var resultatRequeteTousLesDepartements;
+var resultatRequeteTousLesDepartements = [];
 // resultat par commune
-var resultatRequeteToutesLesCommunes;
+var resultatRequeteToutesLesCommunes = [];
 
 //Requêtes
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
-
+/*
 //Execution des requetes Regions
 var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, function (err, query_result) {
 	//if (err) throw err;
 	console.log("génération liste régions");
     resultatRequeteToutesLesRegions = query_result["result"];
 }); 
-console.log(resultatRequeteToutesLesRegions);
+console.log('res1 : '+resultatRequeteToutesLesRegions);
 //Execution des requetes Departement
 var executeRequeteTousLesDepartements = connection.query(requeteTousLesDepartements, function (err, query_result) {
     resultatRequeteTousLesDepartements = query_result["result"];
@@ -62,19 +62,29 @@ var executeRequeteTousLesDepartements = connection.query(requeteTousLesDeparteme
 var executeRequeteToutesLesCommunes = connection.query(requeteToutesLesCommunes, function (err, query_result) {
     resultatRequeteToutesLesCommunes = query_result["result"];
 });
-
-var RefData = [];
-
+*/
 var query = connection.query(requeteToutesLesRegions);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
-
-
 query.each(function(item, hits, offset) {
-    //console.log("Item %d out of %d:", offset, hits);
-    console.log(item);
-    RefData.push(item);
+    resultatRequeteToutesLesRegions.push(item);
+});
+
+var query = connection.query(requeteTousLesDepartements);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteTousLesDepartements.push(item);
+});
+
+var query = connection.query(requeteToutesLesCommunes);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteToutesLesCommunes.push(item);
 });
 
 
@@ -103,13 +113,16 @@ listener.sockets.on('connection', function (socket) {
 	socket.on('called', function(msg) {
 		console.log(msg);
 	});
+	socket.on('requeteDept', function(msg) {
+		console.log(msg);
+		socket.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+	});
+	//socket.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
 	socket.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+	//socket.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
+	//socket.emit('resultatsListes', 'finit');
 });
-listener.sockets.on('called', function (socket) {
-    console.log('requete recue 5/5');
-	socket.emit('resultatRequeteToutesLesRegions', 'yo');
-});
-
+/*
 function start(socket){
 
     //se déclenche au clique sur un  bouton
@@ -123,4 +136,4 @@ function start(socket){
         listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 
     });
-}
+}*/

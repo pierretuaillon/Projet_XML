@@ -20,9 +20,8 @@ var requeteDept;
 function notification(content, requete){
 
 	if(requete=='regions'){
-	 alert('Le serveur a envoye les regions : '+content);
 		requeteToutesRegions=content;
-	}else if (requete == 'commune'){
+	}else if (requete == 'communes'){
 		requeteCommune = content;
 	}else if (requete == 'dept'){
 		requeteDept = content;
@@ -33,24 +32,44 @@ function notification(content, requete){
 function envoieChoix(id){
 	var choixSelect = document.getElementById(id);
 }
- window.onload = function() {
-        document.myform.action = requete();
-		//addOptions('idChxType', 'Region', requeteToutesRegions);
+ document.onload = function() {
+        requete();
     }
+ /*window.onload = function() {
+        requete();
+    }*/
 	
 function requete() {
-	document.getElementById("resultat").innerHTML='requete() se lance mais pas socket';
-	socket.emit('called', 'Jai rien a dire');//('ref'),document.getElementById("ref"));
-	   	 socket.on(('resultatRequeteToutesLesRegions',message), function(message) {
-			document.getElementById("resultat").innerHTML=message;// createHTML(message);
-	  	});
+	socket.emit('called', 'wesh envoie moi les regions et tt stp');
+}	
+function requeteDept() {
+	document.getElementById('resultat').innerHTML='requete dept ! ';
+	//socket.emit('requeteDept', 'wesh envoie moi les dept');
 }
 
 			
 // recuperation des messages "Region" du socket serveur
-socket.on('resultatRequeteToutesLesRegions', function(x) { notification(x,'regions'); });
-socket.on('resultatRequeteTousLesDepartements', function(x) { notification(x,'dept'); });
-socket.on('resultatRequeteToutesLesCommunes', function(x) { notification(x,'communes'); });
+socket.on('resultatRequeteToutesLesRegions', function(x) {
+	notification(x,'regions');
+	document.getElementById("resultat").innerHTML+=(' regions : '+x);
+	addOptions('selectRegion', 'Region', requeteToutesRegions);
+	});
+socket.on('resultatRequeteTousLesDepartements', function(x) {
+	notification(x,'dept');
+	document.getElementById("resultat").innerHTML+=(' depts : '+x);
+	addOptions('selectDept', 'Dept', requeteCommune);
+	});
+socket.on('resultatRequeteToutesLesCommunes', function(x) {
+	notification(x,'communes');
+	document.getElementById("resultat").innerHTML+=(' communes : '+x);
+	addOptions('selectCommune', 'Commune', requeteDept);
+	});
+socket.on('resultatListes', function(x) {
+	document.getElementById("resultat").innerHTML+=(' reception listes : '+requeteToutesRegions+'<br>'+requeteDept+'<br>'+requeteCommune);
+	addOptions('selectRegion', 'Region', requeteToutesRegions);
+	addOptions('selectDept', 'Dept', requeteCommune);
+	addOptions('selectCommune', 'Commune', requeteDept);
+	});
 
 
 function addOptions(id, genese, req){
@@ -66,8 +85,7 @@ A boolean that sets the selected attribute, the default is false. A value of tru
 selected
 A boolean that sets the option's selected state, the default is false (not selected). If omitted, even if the defaultSelected argument is true, the option is not selected.
 */
-	requete();
-/*
+	
 	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
 
 	var List = document.getElementById(id);
@@ -90,7 +108,7 @@ A boolean that sets the option's selected state, the default is false (not selec
 		List.options.add(elOption[i]);
 	}
 
-    document.getElementById(genese).disabled="false";*/
+    document.getElementById(genese).disabled="false";
 }
 
 function initialize(){
@@ -110,11 +128,21 @@ initialize();
     </div>
 
     <div class="row">
-    	<div class="col-md-6">
-    		<!-- Formulaire de navigation dans les donnees "Region"-->
-    		<h3>Régions - <input id="Region" class="btnGenese" type="button" value="Générer" onclick="addOptions('idChxType', 'Region', requeteToutesRegions)" /></h3>
+    	<div class="col-md-6"><button onclick="requeteDept()" >Actualiser</button>
     		<form  name="frmSearchType">
-			<span>Parmi les différentes Régions :</span> <select id="idChxType" name="ChoixType" onchange="envoieChoix('idChxType');">
+    		<!-- Formulaire de navigation dans les donnees "Region"-->
+    		<h3>Régions</h3>
+			<span>Parmi les différentes Régions :</span> <select id="selectRegion" onchange="envoieChoix('selectRegion');">
+				<option value="" selected="selected">-- Faites votre choix --</option>
+			</select></br>
+    		<!-- Formulaire de navigation dans les donnees "Dept"-->
+    		<h3>Départements</h3>
+			<span>Parmi les différents Départements :</span> <select id="selectDept" onchange="envoieChoix('selectDept');">
+				<option value="" selected="selected">-- Faites votre choix --</option>
+			</select></br>
+    		<!-- Formulaire de navigation dans les donnees "Communes"-->
+    		<h3>Communes</h3>
+			<span>Parmi les différentes Communes :</span> <select id="selectCommune" onchange="envoieChoix('selectCommune');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></form></br>
     	</div>
