@@ -1,3 +1,15 @@
+/////////////////////////////////////// BD ////////////////////////////////////////
+var basex  = require("./node_modules/basex/index");
+function getBaseX(){
+	return basex;
+}
+exports.getBaseX= getBaseX;
+var session = new basex.Session("localhost", 8984, "admin", "admin");
+function getSession(){
+	return session;
+}
+exports.getSession= getSession;
+
 /* Module de connection de wolfgangmm*/
 /*lien git https://github.com/wolfgangmm/existdb-node */
 
@@ -13,13 +25,14 @@ auth : admin:mdp
 
 var options = {
     host: "localhost",
-    port: 8080,
+    port: 4040,
     rest: "/exist/rest",
     auth: "admin:admin"
 };
 /*connection à la BD */
-connection = new Connection(options);
-
+var connection = new Connection(options);
+/*console.log('connection bdd : ');
+console.log(connection);*/
 
 var fs = require("fs");
 
@@ -31,21 +44,26 @@ var io = require('socket.io');
 
 
 // resultat par region
-var resultatRequeteToutesLesRegions;
+var resultatRequeteToutesLesRegions='vide';
 // resultat par departement
 var resultatRequeteTousLesDepartements;
 // resultat par commune
 var resultatRequeteToutesLesCommunes;
 
 //Requêtes
-requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
-requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
-requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
+var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
+var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
+var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
 
+session.query(requeteToutesLesRegions, function (data) {
+  console.log(data); // Response data 
+});
 
 //Execution des requetes Regions
-var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, function (err, query_result) {
-    resultatRequeteToutesLesRegions = query_result["result"];
+var executeRequeteToutesLesRegions = session.query(requeteToutesLesRegions, function (err, query_result) {
+	//if (err) throw err;
+	console.log("génération liste régions");
+    resultatRequeteToutesLesRegions = 'resultat';//query_result["result"];
 }); 
 
 //Execution des requetes Departement
@@ -79,11 +97,15 @@ server.listen(4040);
 
 var listener = io.listen(server);
 console.log("serveur connecté, port 4040");
+listener.sockets.on('connection', function (socket) {
+    console.log('Un client est connecté !');
+	socket.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+});
 
 function start(socket){
 
     //se déclenche au clique sur un  bouton
-    socket.on('called', function(){
+    socket.on('called', function(message){
         console.log("Request received.");
         // Permet d'envoyer le résultat de la requête
         listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);

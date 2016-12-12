@@ -2,7 +2,7 @@
 
 <!-- Inclusion du module socket.io -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+<script src="/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 
 // Connexion au socket serveur
@@ -16,7 +16,9 @@ var requeteCommune;
 
 // Gestion de la réception du résultat de la requête
 function notification(content, requete){
+
 	if(requete=='regions'){
+	 alert('Le serveur a envoye les regions : '+content);
 		requeteToutesRegions=content;
 	}else if (requete == 'commune'){
 		requeteCommune = content;
@@ -27,13 +29,24 @@ function notification(content, requete){
 function envoieChoix(id){
 	var choixSelect = document.getElementById(id);
 }
+ window.onload = function() {
+        document.myform.action = requete();
+		//addOptions('idChxType', 'Region', requeteToutesRegions);
+    }
+	
+function requete() {
+	socket.emit('ref', 'Nothing');//('ref'),document.getElementById("ref"));
+	   	 socket.on(('resultatRequete',message), function(message) {
+			document.getElementById("resultat").innerHTML=message;// createHTML(message);
+	  	});
+}
 
+			
 // recuperation des messages "Region" du socket serveur
-socket.on('resultatRequeteToutesRegions', function(x) { notification(x,'regions'); });
+socket.on('resultatRequeteToutesLesRegions', function(x) { notification(x,'regions'); });
 
 
 function addOptions(id, genese, req){
-
 /* API Option
 optionElementReference
 A reference to the newly created HTMLOptionElement.
@@ -53,16 +66,7 @@ A boolean that sets the option's selected state, the default is false (not selec
 
 	var elOption= new Array(req.length);
 
- window.onload = function() {
-        document.myform.action = requete();
-    }
-	
-function requete() {
-	socket.emit('ref');//('ref'),document.getElementById("ref"));
-	   	 socket.on(('resultatRequete',message), function(message) {
-			document.getElementById("resultat").innerHTML=message;// createHTML(message);
-	  	});
-}
+
 
 
 	for(i=0;i<req.length;i++){
@@ -91,10 +95,11 @@ initialize();
 </script>
 
 <div class="container contenu">
-    <div class="page-header">
-    	<h1>Interrogation de la base de données des Immeubles protégés au titre des Monuments Historiques : </h1>
+	<div class="jumbotron">
+		<center>
+    	<h1>Recherche</h1><p>Interrogation de la base de données des Immeubles protégés au titre des Monuments Historiques :</p>
+		</center>
     </div>
-
 
     <div class="row">
     	<div class="col-md-6">
@@ -107,4 +112,5 @@ initialize();
     	</div>
     </div>
 </div>
+<p id="resultat"></p>
 <script type="text/javascript" src="__footer.js"></script>
