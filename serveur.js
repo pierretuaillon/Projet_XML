@@ -63,6 +63,20 @@ var executeRequeteToutesLesCommunes = connection.query(requeteToutesLesCommunes,
     resultatRequeteToutesLesCommunes = query_result["result"];
 });
 
+var RefData = [];
+
+var query = connection.query(requeteToutesLesRegions);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+
+
+query.each(function(item, hits, offset) {
+    //console.log("Item %d out of %d:", offset, hits);
+    console.log(item);
+    RefData.push(item);
+});
+
 
 
 /*******************************SERVEUR*******************************/
