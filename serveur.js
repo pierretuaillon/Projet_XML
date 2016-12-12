@@ -92,6 +92,5 @@ function start(socket){
 
         listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 
-
     });
 }

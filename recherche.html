@@ -53,6 +53,18 @@ A boolean that sets the option's selected state, the default is false (not selec
 
 	var elOption= new Array(req.length);
 
+ window.onload = function() {
+        document.myform.action = requete();
+    }
+	
+function requete() {
+	socket.emit('ref');//('ref'),document.getElementById("ref"));
+	   	 socket.on(('resultatRequete',message), function(message) {
+			document.getElementById("resultat").innerHTML=message;// createHTML(message);
+	  	});
+}
+
+
 	for(i=0;i<req.length;i++){
 
 		elOption[i]=new Option(req[i], ("r"+i), false, false);
@@ -95,5 +107,4 @@ initialize();
     	</div>
     </div>
 </div>
-
 <script type="text/javascript" src="__footer.js"></script>
