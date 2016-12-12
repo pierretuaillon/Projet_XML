@@ -41,6 +41,22 @@ var resultatRequeteTousLesDepartements = [];
 // resultat par commune
 var resultatRequeteToutesLesCommunes = [];
 
+
+//resultat region avec departement
+var resultatRequeteRegion_Departement = [];
+//resultat region avec Commune
+var resultatRequeteRegion_Commune = [];
+
+//resultat departement avec region
+var resultatRequeteDepartement_Region = [];
+//resultat departement avec commune
+var resultatRequeteDepartement_Commune = [];
+
+//resultat communes avec region
+var resultatRequeteCommunes_Region = [];
+// resultat Communes avec departement
+var resultatRequeteCommunes_Departement = [];
+
 //Requêtes
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
@@ -110,6 +126,98 @@ listener.sockets.on('connection', function (socket) {
 		listener.sockets.emit('resultatRequete2', resultatRequeteToutesLesRegions);
 		
 	});
+
+	socket.on('selectRegion', function(NomRegion){
+
+		var requeteDepartement_Region = 'distinct-values( for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" order by $x/DPT return $x/DPT)';
+
+		query = connection.query(requeteDepartement_Region);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteDepartement_Region.push(item);
+		});
+
+		var requeteCommune_Region = 'distinct-values( for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" order by $x/COM return $x/COM)';
+
+		query = connection.query(requeteCommune_Region);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteCommunes_Region.push(item);
+		});
+
+		listener.sockets.emit('resultatRequeteDepartement_Region', resultatRequeteDepartement_Region);
+		listener.sockets.emit('resultatRequeteCommunes_Region', resultatRequeteCommunes_Region);
+		
+	});
+
+	socket.on('selectDept', function(numDep){
+		//Renvoie tous les communes du departement
+		var requeteCommune_Departement = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row where $x/DPT="'+ numDep +'" order by $x/COM return $x/COM)';
+		
+		query = connection.query(requeteCommune_Departement);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteCommunes_Departement.push(item);
+		});
+
+
+		var  requeteRegion_Departement = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row where $x/DPT="'+ numDep +'" order by $x/REG return $x/REG)';
+		query = connection.query(requeteRegion_Departement);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteRegion_Departement.push(item);
+		});		
+
+
+		listener.sockets.emit('resultatRequeteCommunes_Departement', resultatRequeteCommunes_Departement)
+		listener.sockets.emit('resultatRequeteRegion_Departement', resultatRequeteRegion_Departement);
+
+	
+	});
+
+	socket.on('selectCommune', function(nomCommune){
+
+		var requeteRegion_Commune = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row where $x/COM="'+ nomCommune +'" order by $x/REG return $x/REG)';
+
+		query = connection.query(requeteRegion_Commune);
+
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteRegion_Commune.push(item);
+		});		
+
+		var requeteDepartement_Commune = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row where $x/COM="'+ nomCommune +'" order by $x/DPT return $x/DPT)';
+		
+		query = connection.query(requeteDepartement_Commune);
+
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteDepartement_Commune.push(item);
+		});		
+
+
+		listener.sockets.emit('resultatRequeteRegion_Commune', resultatRequeteRegion_Commune);
+		listener.sockets.emit('resultatRequeteDepartement_Commune', resultatRequeteDepartement_Commune);
+
+
+	});
+
 
   socket.on('PDF', function (msg) {
       //  generationPDF();

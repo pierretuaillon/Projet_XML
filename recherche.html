@@ -2,7 +2,7 @@
 
 <!-- Inclusion du module socket.io -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script src="http://localhost/socket.io/socket.io.js"></script>
+<script src="/socket.io/socket.io.js"></script>
 <script src="http://localhost:4040/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 
@@ -16,6 +16,23 @@ var requeteCommune;
 var requeteDept;
 
 
+//resultat region avec departement
+var resultatRequeteRegion_Departement = [];
+//resultat region avec Commune
+var resultatRequeteRegion_Commune = [];
+
+//resultat departement avec region
+var resultatRequeteDepartement_Region = [];
+//resultat departement avec commune
+var resultatRequeteDepartement_Commune = [];
+
+//resultat communes avec region
+var resultatRequeteCommunes_Region = [];
+// resultat Communes avec departement
+var resultatRequeteCommunes_Departement = [];
+
+
+var FirstTime = true;
 // Gestion de la réception du résultat de la requête
 function notification(content, requete){
 
@@ -31,10 +48,19 @@ function notification(content, requete){
 //fonction appelé au changement dans les listes
 function envoieChoix(id){
 	var choixSelect = document.getElementById(id);
+
+	if (document.getElementById(id).name == 'selectRegion'){
+		socket.emit('selectRegion', theSelect[theSelect.selectedIndex].value);
+	}else if (document.getElementById(id).name =='selectDept'){
+		socket.emit('selectDept', theSelect[theSelect.selectedIndex].value);
+	}else if (document.getElementById(id).name =='selectCommune'){
+		socket.emit('selectCommune', theSelect[theSelect.selectedIndex].value);
+	}	
+
 }
- window.onload = function() {
-        requete();
-    }
+window.onload = function() {
+    requete();
+}
 	
 function requete() {
 	socket.emit('called', 'wesh envoie moi les regions et tt stp');
@@ -72,6 +98,34 @@ socket.on('resultatRequeteToutesLesCommunes', function(x) {
 });
 
 
+socket.on('resultatRequeteDepartement_Region',function(x){
+	notification(x,'dept');
+}
+
+socket.on('resultatRequeteCommunes_Region',function(x){
+	resultatRequeteCommunes_Region =x;
+
+}
+
+socket.on('resultatRequeteCommunes_Departement',function(x){
+	resultatRequeteCommunes_Departement = x;
+
+}
+
+socket.on('resultatRequeteRegion_Departement',function(x){
+	resultatRequeteRegion_Departement = x;
+
+}
+
+socket.on('resultatRequeteRegion_Commune',function(x){
+	resultatRequeteRegion_Commune = x;
+
+}
+
+socket.on('resultatRequeteDepartement_Commune',function(x){
+	notification(x,'dept');
+
+}
 
 /* API Option
 optionElementReference
@@ -140,7 +194,7 @@ initialize();
 			</select></br>
     		<!-- Formulaire de navigation dans les donnees "Communes"-->
     		<h3>Communes</h3>
-			<span>Parmi les différentes Communes :</span> <select id="selectCommune" onchange="envoieChoix('selectCommune');">
+			<span>Parmi les différentes Communes :</span> <select id="selectCommune" /onchange="envoieChoix('selectCommune');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></form></br>
     	</div>
