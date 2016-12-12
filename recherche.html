@@ -2,7 +2,7 @@
 
 <!-- Inclusion du module socket.io -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+
 <script type="text/javascript">
 
 // Connexion au socket serveur
@@ -13,6 +13,7 @@ var socket = io.connect();
 //Resultat par référence;
 var requeteToutesRegions;
 var requeteCommune;
+var requeteDept;
 
 // Gestion de la réception du résultat de la requête
 function notification(content, requete){
@@ -22,6 +23,8 @@ function notification(content, requete){
 		requeteToutesRegions=content;
 	}else if (requete == 'commune'){
 		requeteCommune = content;
+	}else if (requete == 'dept'){
+		requeteDept = content;
 	}
 }
 
@@ -44,6 +47,8 @@ function requete() {
 			
 // recuperation des messages "Region" du socket serveur
 socket.on('resultatRequeteToutesLesRegions', function(x) { notification(x,'regions'); });
+socket.on('resultatRequeteTousLesDepartements', function(x) { notification(x,'dept'); });
+socket.on('resultatRequeteToutesLesCommunes', function(x) { notification(x,'communes'); });
 
 
 function addOptions(id, genese, req){

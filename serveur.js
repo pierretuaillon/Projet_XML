@@ -1,14 +1,5 @@
 /////////////////////////////////////// BD ////////////////////////////////////////
-var basex  = require("./node_modules/basex/index");
-function getBaseX(){
-	return basex;
-}
-exports.getBaseX= getBaseX;
-var session = new basex.Session("localhost", 8984, "admin", "admin");
-function getSession(){
-	return session;
-}
-exports.getSession= getSession;
+
 
 /* Module de connection de wolfgangmm*/
 /*lien git https://github.com/wolfgangmm/existdb-node */
@@ -25,14 +16,14 @@ auth : admin:mdp
 
 var options = {
     host: "localhost",
-    port: 4040,
+    port: 8080,
     rest: "/exist/rest",
     auth: "admin:admin"
 };
 /*connection à la BD */
 var connection = new Connection(options);
-/*console.log('connection bdd : ');
-console.log(connection);*/
+console.log('connection bdd : ');
+console.log(connection);
 
 var fs = require("fs");
 
@@ -55,15 +46,11 @@ var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
 
-session.query(requeteToutesLesRegions, function (data) {
-  console.log(data); // Response data 
-});
-
 //Execution des requetes Regions
-var executeRequeteToutesLesRegions = session.query(requeteToutesLesRegions, function (err, query_result) {
+var executeRequeteToutesLesRegions = connection.query(requeteToutesLesRegions, function (err, query_result) {
 	//if (err) throw err;
 	console.log("génération liste régions");
-    resultatRequeteToutesLesRegions = 'resultat';//query_result["result"];
+    resultatRequeteToutesLesRegions = query_result["result"];
 }); 
 
 //Execution des requetes Departement
