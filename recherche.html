@@ -2,11 +2,12 @@
 
 <!-- Inclusion du module socket.io -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
+<script src="http://localhost/socket.io/socket.io.js"></script>
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
 <script type="text/javascript">
 
 // Connexion au socket serveur
-var socket = io.connect();
+var socket = io.connect('http://localhost:4040');
 
 //Variable global
 
@@ -38,7 +39,8 @@ function envoieChoix(id){
     }
 	
 function requete() {
-	socket.emit('called', 'Nothing');//('ref'),document.getElementById("ref"));
+	document.getElementById("resultat").innerHTML='requete() se lance mais pas socket';
+	socket.emit('called', 'Jai rien a dire');//('ref'),document.getElementById("ref"));
 	   	 socket.on(('resultatRequeteToutesLesRegions',message), function(message) {
 			document.getElementById("resultat").innerHTML=message;// createHTML(message);
 	  	});
@@ -64,7 +66,8 @@ A boolean that sets the selected attribute, the default is false. A value of tru
 selected
 A boolean that sets the option's selected state, the default is false (not selected). If omitted, even if the defaultSelected argument is true, the option is not selected.
 */
-
+	requete();
+/*
 	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
 
 	var List = document.getElementById(id);
@@ -87,7 +90,7 @@ A boolean that sets the option's selected state, the default is false (not selec
 		List.options.add(elOption[i]);
 	}
 
-    document.getElementById(genese).disabled="false";
+    document.getElementById(genese).disabled="false";*/
 }
 
 function initialize(){

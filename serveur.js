@@ -86,7 +86,14 @@ var listener = io.listen(server);
 console.log("serveur connecté, port 4040");
 listener.sockets.on('connection', function (socket) {
     console.log('Un client est connecté !');
+	socket.on('called', function(msg) {
+		console.log(msg);
+	});
 	socket.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
+});
+listener.sockets.on('called', function (socket) {
+    console.log('requete recue 5/5');
+	socket.emit('resultatRequeteToutesLesRegions', 'yo');
 });
 
 function start(socket){
