@@ -100,32 +100,32 @@ socket.on('resultatRequeteToutesLesCommunes', function(x) {
 
 socket.on('resultatRequeteDepartement_Region',function(x){
 	notification(x,'dept');
-}
+});
 
 socket.on('resultatRequeteCommunes_Region',function(x){
 	resultatRequeteCommunes_Region =x;
 
-}
+});
 
 socket.on('resultatRequeteCommunes_Departement',function(x){
 	resultatRequeteCommunes_Departement = x;
 
-}
+});
 
 socket.on('resultatRequeteRegion_Departement',function(x){
 	resultatRequeteRegion_Departement = x;
 
-}
+});
 
 socket.on('resultatRequeteRegion_Commune',function(x){
 	resultatRequeteRegion_Commune = x;
 
-}
+});
 
 socket.on('resultatRequeteDepartement_Commune',function(x){
 	notification(x,'dept');
 
-}
+});
 
 /* API Option
 optionElementReference
@@ -194,12 +194,62 @@ initialize();
 			</select></br>
     		<!-- Formulaire de navigation dans les donnees "Communes"-->
     		<h3>Communes</h3>
-			<span>Parmi les différentes Communes :</span> <select id="selectCommune" /onchange="envoieChoix('selectCommune');">
+			<span>Parmi les différentes Communes :</span> <select id="selectCommune" onchange="envoieChoix('selectCommune');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></form></br>
     	</div>
     </div>
+
+	<div class ="listeCommunue">
+		<div class = "row">
+			<div class = "col-md-4">
+
+				<div class="thumbnail">
+	        		<img src="/img/batiment.jpg" alt="img batiment" class="imgBatiment"/>
+
+					<center><h1> Titre du batiment </h1></center>
+
+					<center>
+						<h6> REF : </h6>
+						<h6> ETUD : </h6>
+						<h6> REG : </h6>
+						<h6> DEPT : </h6>
+						<h6> COM : </h6>
+						<h6> INSEE : </h6>
+						<h6> TICO : </h6>
+						<h6> ADRS : </h6>
+					</center>
+					<span class="bouton" id="bouton_texte" onclick="javascript:afficher_cacher('texte');">Afficher le texte</span>
+				    <div id="texte" class="texte">
+				        <!-- Texte à cacher ici -->
+
+				    </div>
+				</div>
+			</div>
+			<div class = "col-md-4">
+				<p>Lorem ipsum dolores </p>
+			</div>
+			<div class = "col-md-4">
+				<p>Lorem ipsum dolores </p>
+			</div>
+		</div>
+	</div>    
 </div>
 <p id="resultat">vide<br></p>
 <p id="vide"><br><br><br><br></p>
 <script type="text/javascript" src="__footer.js"></script>
+
+
+<script type="text/javascript">
+
+function appelerStyle(lienImage, REF, ETUD, REG, DEPT, COM, INSEE, TICO ,ADRS ){
+	//<!-- Debut
+
+    document.write('<form action="" method="">');
+    document.write('Info : <input type="text" name="info" value="' + texte_dans_inputText + '"><br />');
+    document.write('</form>');
+	// fin -->
+}
+
+
+</script>
