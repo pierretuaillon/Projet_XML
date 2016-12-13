@@ -64,7 +64,7 @@ var resultatRequeteStatsRegions = [];
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
-var requeteStatsRegions = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/REG return (count($x/REG),$group)';
+var requeteStatsRegions = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/REG return ($group,count($x/REG))';
 
 
 var query;
@@ -74,7 +74,7 @@ query.on("error", function(err) {
     console.log("An statsRegions error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteStatsRegions.push(item);
+    resultatRequeteStatsRegions+=item+';';
 });
 //requete toutes regions
 query = connection.query(requeteToutesLesRegions);
