@@ -322,7 +322,7 @@ ADRS :
     		console.log("An error occurred: " + err);
 		});
 		query.each(function(item, hits, offset) {
-    		resultatRequeteRegion_Titre.push(item);
+    		resultatRequeteSelectRegion_Titre.push(item);
 		});
 		
 		query = connection.query(requeteRegion_Ref);

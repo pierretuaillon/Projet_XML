@@ -145,9 +145,29 @@ socket.on('resultatRequeteDepartement_Commune',function(x){
 	notification(x,'dept');
 	addOptions('selectDept', 'Dept', requeteDept);
 });
-socket.on('resultatRequeteSelectRegion',function(x){
-	document.getElementById("test").innerHTML+=x;
-	var imageURL = giveImageURL(ref);
+socket.on('resultatRequeteSelectRegion_Titre',function(x){
+	var DivRes = document.getElementById("listeResultats");
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.createElement("div");
+		div.setAttribute("class", "col-md-4");
+		var div2 = document.createElement("div");
+		div2.setAttribute("class", "thumbnail");
+		div2.setAttribute("id", "divRes"+i);
+		div2.innerHTML+="<h2>"+x[i]+"</h2>";
+		div.appendChild(div2);
+		DivRes.appendChild(div);
+	}
+	//var imageURL = giveImageURL(ref);
+});
+
+socket.on('resultatRequeteSelectRegion_Ref',function(x){
+	var i;
+	for(i=0;i<x.length&&x<5;i++){
+		var div = document.getElementById("divRes"+i);
+		//div.innerHTML+="<br><img src='"+giveImageURL(x[i])+"'/><br>Ref: "+x[i];
+		div.innerHTML+="<br>"+giveImageURL(x[i]);
+	}
 });
 
 
@@ -223,7 +243,7 @@ function addOptions(id, genese, req){
 			var url = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
 
 			var concat = url + "?query=" + query;
-			document.write("<p>"+ concat + "</p>");
+			//document.write("<p>"+ concat + "</p>");
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", concat, false);
 			xmlHttp.send(null);
@@ -282,7 +302,7 @@ initialize();
 	<br><p id="test">resSelect : </p><br>
 	
 	<div class ="listeCommunue">
-		<div class = "row">
+		<div id="listeResultats" class = "row">
 			<div class = "col-md-4">
 
 				<div class="thumbnail">
@@ -306,12 +326,6 @@ initialize();
 
 				    </div>
 				</div>
-			</div>
-			<div class = "col-md-4">
-				<p>Lorem ipsum dolores </p>
-			</div>
-			<div class = "col-md-4">
-				<p>Lorem ipsum dolores </p>
 			</div>
 		</div>
 	</div>    
