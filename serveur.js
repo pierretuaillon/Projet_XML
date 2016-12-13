@@ -389,7 +389,16 @@ ADRS :
 		});
 		
 		
-		
+		listener.sockets.emit('resultatRequeteSelectRegion_Titre', 	resultatRequeteSelectRegion_Titre);
+		listener.sockets.emit('resultatRequeteSelectRegion_Ref', 	resultatRequeteSelectRegion_Ref);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Etud', 	resultatRequeteSelectRegion_Etud);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Reg', 	resultatRequeteSelectRegion_Reg);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Dept', 	resultatRequeteSelectRegion_Dept);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Com', 	resultatRequeteSelectRegion_Com);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Insee', 	resultatRequeteSelectRegion_Insee);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Adrs', 	resultatRequeteSelectRegion_Adrs);	
+
+
 		listener.sockets.emit('resultatRequeteDepartement_Region', resultatRequeteDepartement_Region);
 		listener.sockets.emit('resultatRequeteCommunes_Region', resultatRequeteCommunes_Region);
 		listener.sockets.emit('resultatRequeteSelectRegion', resultatRequeteSelectRegion);
