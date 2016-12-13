@@ -65,7 +65,14 @@ var resultatRequeteCommunes_Departement = [];
 
 var resultatRequeteSelectRegion = [];
 
-
+var resultatRequeteSelectRegion_Titre = [];
+var resultatRequeteSelectRegion_Ref = [];
+var resultatRequeteSelectRegion_Etud = [];
+var resultatRequeteSelectRegion_Reg = [];
+var resultatRequeteSelectRegion_Dept = [];
+var resultatRequeteSelectRegion_Com = [];
+var resultatRequeteSelectRegion_Insee = [];
+var resultatRequeteSelectRegion_Adrs =[];
 
 //stats : nb d'occurences
 var resultatRequeteStatsRegions = [];
@@ -309,16 +316,77 @@ INSEE :
 TICO :
 ADRS :
 */
-		query = connection.query(requeteSelectRegion);
+		query = connection.query(requeteRegion_Titre);
 		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
 		query.each(function(item, hits, offset) {
-    		resultatRequeteSelectRegion.push(item);
+    		resultatRequeteRegion_Titre.push(item);
 		});
 		
+		query = connection.query(requeteRegion_Ref);
 		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Ref.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Etud);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Etud.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Reg);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Reg.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Dept);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Dept.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Com);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Com.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Insee);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Insee.push(item);
+		});
+		
+		query = connection.query(requeteRegion_Adrs);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Adrs.push(item);
+		});
 		
 		
 		
