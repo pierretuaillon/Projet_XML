@@ -16,45 +16,139 @@ window.onload = function() {
 
 function requete() {
 	socket.emit('statsRegions', 'client demande les statistiques par regions');
+	socket.emit('statsDepts', 'client demande les statistiques par dept');
+	socket.emit('statsCommunes', 'client demande les statistiques par commune');
+	socket.emit('statsEtuds', 'client demande les statistiques par étude');
+	socket.emit('statsStats', 'client demande les statistiques par statut');
+	socket.emit('statsAutrs', 'client demande les statistiques par auteur');
+	//socket.emit('called', 'client demande called');
 }	
 
-socket.on('statsRegions', function(tab) {
+var tabCountsRegions = [];
+var tabRegions = [];
+var tabCountsDepts = [];
+var tabDepts = [];
+var tabCountsCommunes = [];
+var tabCommunes = [];
+var tabCountsEtuds = [];
+var tabEtuds = [];
+var tabCountsAutrs = [];
+var tabAutrs = [];
+var tabCountsStats = [];
+var tabStats = [];
 
-	tab=tab.split(';');
-	var py=10;
-	for(i = 0 ; i+1 < tab.length ; i+=2) {
-		var texte = tab[i+1]+' en '+tab[i];
-		document.getElementById("statsRegions").innerHTML+='<g class="bar">    <rect width="'+(tab[i+1]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tab[i+1]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+texte+'</text>  </g>';
-		document.getElementById("p").innerHTML+=texte+', ';
-		py+=20;
-	}
+
+
+socket.on('statsRegions', function(tab) {
+	tabCountsRegions=tab;
+});
+socket.on('statsDepts', function(tab) {
+	tabCountsDepts=tab;
+});
+socket.on('statsCommunes', function(tab) {
+	tabCountsCommunes=tab;
+});
+socket.on('statsEtuds', function(tab) {
+	tabCountsEtuds=tab;
+});
+socket.on('statsStats', function(tab) {
+	tabCountsStats=tab;
+});
+socket.on('statsAutrs', function(tab) {
+	tabCountsAutrs=tab;
+});
+socket.on('resultatRequeteToutesLesRegions', function(tab) {
+	tabRegions=tab;
+});
+socket.on('resultatRequeteTousLesDepartements', function(tab) {
+	tabDepts=tab;
+});
+socket.on('resultatRequeteToutesLesCommunes', function(tab) {
+	tabCommunes=tab;
+});
+socket.on('resultatRequeteToutesLesEtudes', function(tab) {
+	tabEtuds=tab;
+});
+socket.on('resultatRequeteTousLesAuteurs', function(tab) {
+	tabAutrs=tab;
+});
+socket.on('resultatRequeteTousLesStatuts', function(tab) {
+	tabStats=tab;
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
+function genererRegions() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsRegions.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsRegions[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsRegions[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsRegions[i]||0)+' en région '+tabRegions[i]+'</text>  </g>';
+		py+=20;
+	}
+	//document.getElementById("test").innerHTML=tabCountsRegions+'<br>'+tabRegions;
+}
+function genererDepts() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsDepts.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsDepts[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsDepts[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsDepts[i]||0)+' dans le département '+tabDepts[i]+'</text>  </g>';
+		py+=20;
+	}
+	//document.getElementById("test").innerHTML='counts: '+tabCountsDepts+'<br>tab: '+tabDepts;
+}
+function genererCommunes() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsCommunes.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsCommunes[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsCommunes[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsCommunes[i]||0)+' dans la commune '+tabCommunes[i]+'</text>  </g>';
+		py+=20;
+	}
+	//document.getElementById("test").innerHTML=tabCountsCommunes+'<br>tab: '+tabCommunes;
+}
+function genererEtudes() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsEtuds.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsEtuds[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsEtuds[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsEtuds[i]||0)+' sont du type d\'étude '+tabEtuds[i]+'</text>  </g>';
+		py+=20;
+	}
+	document.getElementById("test").innerHTML=tabCountsEtuds+'<br>tab: '+tabEtuds;
+}
+function genererStatuts() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsStats.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsStats[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsStats[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsStats[i]||0)+' ont le statut '+tabStats[i]+'</text>  </g>';
+		py+=20;
+	}
+	document.getElementById("test").innerHTML=tabCountsStats+'<br>tab: '+tabStats;
+}
+function genererAuteurs() {
+	var py=10;
+	document.getElementById("graphique").innerHTML='';
+	for(i = 0 ; i+1 < tabCountsAutrs.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsAutrs[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsAutrs[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsAutrs[i]||0)+' de '+tabAutrs[i]+'</text>  </g>';
+		py+=20;
+	}
+	document.getElementById("test").innerHTML=tabCountsAutrs+'<br>tab: '+tabAutrs;
+}
 
 
 </script>
+<div style="margin-left: 2cm;">
+
+<button onclick="genererRegions()">Générer statistiques par région</button>
+<button onclick="genererDepts()">Générer statistiques par département</button>
+<button onclick="genererCommunes()">Générer statistiques par commune</button>
+<button onclick="genererEtudes()">Générer statistiques par type d'étude</button>
+<button onclick="genererStatuts()">Générer statistiques par statut</button>
+<button onclick="genererAuteurs()">Générer statistiques par auteur</button>
+
+
+<p id="test">f</p>
+
+<figure><svg id="graphique" class="chart" width="100%" height="100%" aria-labelledby="title" role="img"></svg></figure>
 
 
 
-<p id="p"></p>
 
-<!-- <input id="Region" class="btnGenese" type="button" value="Générer" onclick="dessiner()" /> -->
-<figure>  <figcaption>Statistiques :</figcaption><svg id="statsRegions" class="chart" width="100%" height="100%" aria-labelledby="title" role="img"><title>Statistiques par région</title>
-<!-- remplissage -->
-</svg></figure>
-
-
-
+</div>
 <script type="text/javascript" src="__footer.js"></script>

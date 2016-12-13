@@ -40,6 +40,12 @@ var resultatRequeteToutesLesRegions = [];
 var resultatRequeteTousLesDepartements = [];
 // resultat par commune
 var resultatRequeteToutesLesCommunes = [];
+// resultat par étude
+var resultatRequeteToutesLesEtudes = [];
+// resultat par statut
+var resultatRequeteTousLesStatuts = [];
+// resultat par auteur
+var resultatRequeteTousLesAuteurs = [];
 
 
 //resultat region avec departement
@@ -57,14 +63,28 @@ var resultatRequeteCommunes_Region = [];
 // resultat Communes avec departement
 var resultatRequeteCommunes_Departement = [];
 
-//compte le nb d'occurences par region
+//stats : nb d'occurences
 var resultatRequeteStatsRegions = [];
+var resultatRequeteStatsDepartements = [];
+var resultatRequeteStatsCommunes = [];
+var resultatRequeteStatsEtuds = [];
+var resultatRequeteStatsStats = [];
+var resultatRequeteStatsAutrs = [];
 
 //Requêtes
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
-var requeteStatsRegions = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/REG return ($group,count($x/REG))';
+var requeteToutesLesEtudes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/ETUD return $x/ETUD)';
+var requeteTousLesAuteurs = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/AUTR return $x/AUTR)';
+var requeteTousLesStatuts = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/STAT return $x/STAT)';
+
+var requeteStatsRegions = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/REG order by $group return count($x/REG)';
+var requeteStatsDepartements = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/DPT order by $group return count($x/DPT)';
+var requeteStatsCommunes = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/COM order by $group return count($x/COM)';
+var requeteStatsEtuds = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/ETUD order by $group return count($x/ETUD)';
+var requeteStatsStats = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/STAT order by $group return count($x/STAT)';
+var requeteStatsAutrs = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/AUTR order by $group return count($x/AUTR)';
 
 
 var query;
@@ -74,33 +94,49 @@ query.on("error", function(err) {
     console.log("An statsRegions error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteStatsRegions+=item+';';
+    resultatRequeteStatsRegions[offset]=item;
+});
+//requete stats departements
+query = connection.query(requeteStatsDepartements);
+query.on("error", function(err) {
+    console.log("An statsRegions error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteStatsDepartements[offset]=item;
+});
+//requete stats communes
+query = connection.query(requeteStatsCommunes);
+query.on("error", function(err) {
+    console.log("An statsRegions error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteStatsCommunes[offset]=item;
 });
 //requete toutes regions
-query = connection.query(requeteToutesLesRegions);
+query = connection.query(requeteStatsEtuds);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteToutesLesRegions.push(item);
+    resultatRequeteStatsEtuds[offset]=item;
 });
 
 //requete tous dept
-query = connection.query(requeteTousLesDepartements);
+query = connection.query(requeteTousLesAuteurs);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteTousLesDepartements.push(item);
+    resultatRequeteStatsStats[offset]=item;
 });
 
 //requete toutes communes
-query = connection.query(requeteToutesLesCommunes);
+query = connection.query(requeteTousLesStatuts);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteToutesLesCommunes.push(item);
+    resultatRequeteStatsAutrs[offset]=item;
 });
 
 
@@ -143,7 +179,33 @@ listener.sockets.on('connection', function (socket) {
 	});
 	socket.on('statsRegions', function(msg) {
 		console.log(msg);
+		listener.sockets.emit('resultatRequeteToutesLesRegions', resultatRequeteToutesLesRegions);
 		listener.sockets.emit('statsRegions', resultatRequeteStatsRegions);
+	});
+	socket.on('statsDepts', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('resultatRequeteTousLesDepartements', resultatRequeteTousLesDepartements);
+		listener.sockets.emit('statsDepts', resultatRequeteStatsDepartements);
+	});
+	socket.on('statsCommunes', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
+		listener.sockets.emit('statsCommunes', resultatRequeteStatsCommunes);
+	});
+	socket.on('statsEtuds', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('resultatRequeteToutesLesEtudes', resultatRequeteToutesLesEtudes);
+		listener.sockets.emit('statsEtuds', resultatRequeteStatsEtuds);
+	});
+	socket.on('statsStats', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('resultatRequeteTousLesStatuts', resultatRequeteTousLesStatuts);
+		listener.sockets.emit('statsStats', resultatRequeteStatsStats);
+	});
+	socket.on('statsAutrs', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('resultatRequeteTousLesAuteurs', resultatRequeteTousLesAuteurs);
+		listener.sockets.emit('statsAutrs', resultatRequeteStatsAutrs);
 	});
 
 	socket.on('selectRegion', function(NomRegion){
