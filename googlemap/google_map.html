@@ -1,17 +1,23 @@
+<!DOCTYPE html>
 <html>
   <head>
+    <title>Affichage de la map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?signed_in=true"></script>
+    <script>
 
-  <!-- AUTEUR : BARNINI Nicholas -->
-
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <title>Google Maps JavaScript API v3 Example: Geocoding Simple</title>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <script type="text/javascript">
-
-    var COMetADRrenseigné = true;
-
-    <!-- permet de récupérer les informations GET -->
+      <!-- permet de récupérer les informations GET -->
       function getParameterByName(name, url) {
           if (!url) {
             url = window.location.href;
@@ -24,10 +30,10 @@
           return decodeURIComponent(results[2].replace(/\+/g, " "));
       }
 
-      function getLongLatAndImageFromREF(ref) {
+
+        function getLongLatAndImageFromREF(ref) {
             
-            var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '"
-                + ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
+            var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '" + ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
 
             var url = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
 
@@ -36,147 +42,43 @@
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", concat, false);
             xmlHttp.send(null);
-            document.write("<p> "+concat+" </p>");
-            
+
             return xmlHttp.responseXML;
-          }
-
-      document.write("<p> COM : "+getParameterByName('COM')+"</p>");
-      document.write("<p> TEST : "+getParameterByName('ADR')+"</p>");
-
-      <!-- ICI ON RECUPERE LES INFORMATIONS -->
-      var ADRS = getParameterByName('ADR');
-      var COM  = getParameterByName('COM');
-
-      if(ADRS == null || COM == null){
-        document.write("<h1> RIP </h1>");
-        COMetADRrenseigné = false;
-      }
-
-
-
-      <!-- Si l adresse donné est en 2 parties on prend la premiere  -->
-      var premiereADR = ADRS.split(";")[0];
-
-      document.write("<p> premiereADR : "+premiereADR+"</p>");
-
-      <!-- On récupére les index de la partie de l adresse sous parenthéses  -->
-      var indexPremierePar = premiereADR.indexOf("(");
-      var indexDeuxiemePar = premiereADR.indexOf(")")+1;
-
-      <!-- On récupere le morceau sous parenthéses  -->
-      var substring = premiereADR.substring(indexPremierePar, indexDeuxiemePar);
-
-      document.write("<p> substring : "+substring+"</p>");
-
-      <!-- On supprime le morceau et on le met   -->
-      var ADRSFinal = premiereADR.replace(substring, "");
-      ADRSFinal = substring.replace("(", "").replace(")", "") + " " + ADRSFinal + " " + COM;
-
-      document.write("<p> ADRSFinal : "+ADRSFinal+"</p>");
-
-      var geocoder;
-      var map;
-      var address = ADRSFinal;
-      function initialize() {
-        if(COMetADRrenseigné == true) {
-          geocoder = new google.maps.Geocoder();
-          var latlng = new google.maps.LatLng(-34.397, 150.644);
-          var myOptions = {
-            zoom: 15,
-            center: latlng,
-          mapTypeControl: true,
-          mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
-          navigationControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-          map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-          if (geocoder) {
-            geocoder.geocode( { 'address': address}, function(results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                map.setCenter(results[0].geometry.location);
-
-                  var infowindow = new google.maps.InfoWindow(
-                      { content: '<b>'+address+'</b>',
-                        size: new google.maps.Size(150,50)
-                      });
-
-                  var marker = new google.maps.Marker({
-                      position: results[0].geometry.location,
-                      map: map, 
-                      title:address
-                  }); 
-                  google.maps.event.addListener(marker, 'click', function() {
-                      infowindow.open(map,marker);
-                  });
-
-                } else {
-                  alert("No results found");
-                }
-              } else {
-                alert("Geocode was not successful for the following reason: " + status);
-              }
-            });
-          }
-        } else {
-
-
-          var ref = "PA00078014";
-          var repXML = getLongLatAndImageFromREF(ref);
-          var point = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[1].getElementsByTagName("literal")[0].innerHTML; 
-          var longLat = point.replace("Point\(", "").replace("\)", "").split(" ");
-          document.write("<p> point : "+ point +"</p>");
-          document.write("<p> longLat : "+ longLat +"</p>");
-
-                    geocoder = new google.maps.Geocoder();
-          var latlng = new google.maps.LatLng(-34.397, 150.644);
-          var myOptions = {
-            zoom: 15,
-            center: latlng,
-          mapTypeControl: true,
-          mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
-          navigationControl: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-          };
-          map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-          if (geocoder) {
-            geocoder.geocode( { 'address': address}, function(results, status) {
-              if (status == google.maps.GeocoderStatus.OK) {
-                if (status != google.maps.GeocoderStatus.ZERO_RESULTS) {
-                map.setCenter(results[0].geometry.location);
-
-                  var infowindow = new google.maps.InfoWindow(
-                      { content: '<b>'+address+'</b>',
-                        size: new google.maps.Size(150,50)
-                      });
-
-                  var marker = new google.maps.Marker({
-                      position: results[0].geometry.location,
-                      map: map, 
-                      title:address
-                  }); 
-                  google.maps.event.addListener(marker, 'click', function() {
-                      infowindow.open(map,marker);
-                  });
-
-                } else {
-                  alert("No results found");
-                }
-              } else {
-                alert("Geocode was not successful for the following reason: " + status);
-              }
-            });
-          }
-
-
-
-          
         }
-      }
+
+        var ref = getParameterByName('REF');
+        var repXML = getLongLatAndImageFromREF(ref);
+        var point = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[1].getElementsByTagName("literal")[0].innerHTML; 
+        var longLat = point.replace("Point\(", "").replace("\)", "").split(" ");
+
+        var map;
+        function initialize() {
+          var mapOptions = {
+            zoom: 12,
+            center: {lat: Number(longLat[1]), lng: Number(longLat[0])}
+          };
+          map = new google.maps.Map(document.getElementById('map'),
+              mapOptions);
+
+          var marker = new google.maps.Marker({
+            position: {lat: Number(longLat[1]), lng: Number(longLat[0])},
+            map: map
+          });
+
+          var infowindow = new google.maps.InfoWindow({
+            content: '<p>Marker Location:' + marker.getPosition() + '</p>'
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
   </head>
-  <body onload="initialize()">
-    <div id="map_canvas" style="width:100%; height:100%">
+  <body>
+    <div id="map"></div>
   </body>
 </html>
