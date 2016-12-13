@@ -145,6 +145,10 @@ socket.on('resultatRequeteDepartement_Commune',function(x){
 	notification(x,'dept');
 	addOptions('selectDept', 'Dept', requeteDept);
 });
+socket.on('resultatRequeteSelectRegion',function(x){
+	document.getElementById("test").innerHTML+=x;
+	var imageURL = giveImageURL(ref);
+});
 
 
 
@@ -210,6 +214,34 @@ function addOptions(id, genese, req){
    // document.getElementById(genese).disabled="false";
 }
 
+
+	//SPARQL
+		function getLongLatAndImageFromREF(ref) {
+
+			var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '"+ ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
+
+			var url = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
+
+			var concat = url + "?query=" + query;
+			document.write("<p>"+ concat + "</p>");
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open("GET", concat, false);
+			xmlHttp.send(null);
+			
+			return xmlHttp.responseXML;
+		}
+
+		function giveImageURL(ref){
+		
+
+			var repXML = getLongLatAndImageFromREF(ref);
+			var image = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[0].getElementsByTagName("uri")[0].innerHTML;
+
+			return image;
+		}
+
+		
+		
 function initialize(){
 
 }
@@ -247,6 +279,8 @@ initialize();
     	</div>
     </div>
 
+	<br><p id="test">resSelect : </p><br>
+	
 	<div class ="listeCommunue">
 		<div class = "row">
 			<div class = "col-md-4">

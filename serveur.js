@@ -63,6 +63,10 @@ var resultatRequeteCommunes_Region = [];
 // resultat Communes avec departement
 var resultatRequeteCommunes_Departement = [];
 
+var resultatRequeteSelectRegion = [];
+
+
+
 //stats : nb d'occurences
 var resultatRequeteStatsRegions = [];
 var resultatRequeteStatsDepartements = [];
@@ -286,8 +290,41 @@ listener.sockets.on('connection', function (socket) {
     		resultatRequeteCommunes_Region.push(item);
 		});
 
+		var requeteRegion_Titre = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/TICO';
+		var requeteRegion_Ref = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REF';
+		var requeteRegion_Etud = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ETUD';
+		var requeteRegion_Reg = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REG';
+		var requeteRegion_Dept = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/DEPT';
+		var requeteRegion_Com = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/COM';
+		var requeteRegion_Insee = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/INSEE';
+		var requeteRegion_Adrs = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ADRS';
+/*
+Titre du batiment
+REF :
+ETUD :
+REG :
+DEPT :
+COM :
+INSEE :
+TICO :
+ADRS :
+*/
+		query = connection.query(requeteSelectRegion);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion.push(item);
+		});
+		
+		
+		
+		
+		
 		listener.sockets.emit('resultatRequeteDepartement_Region', resultatRequeteDepartement_Region);
 		listener.sockets.emit('resultatRequeteCommunes_Region', resultatRequeteCommunes_Region);
+		listener.sockets.emit('resultatRequeteSelectRegion', resultatRequeteSelectRegion);
 		
 	});
 
