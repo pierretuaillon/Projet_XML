@@ -47,16 +47,34 @@ function notification(content, requete){
 
 //fonction appelé au changement dans les listes
 function envoieChoix(id){
-	var choixSelect = document.getElementById(id);
+	//select = document.getElementById(id);
+	var select, texte;
+	select = document.getElementById(id);
+	texte = select.options[select.selectedIndex].text;
 
+	alert("choix :" + texte);
 	if (document.getElementById(id).name == 'selectRegion'){
-		socket.emit('selectRegion', theSelect[theSelect.selectedIndex].value);
+		socket.emit('selectRegion', select.options[select.selectedIndex].text);
+		viderSelect();
+		
+		var oSelect = document.getElementById('selectRegion');
+    	oSelect.options[0] = new Option(texte, texte);
+   
 	}else if (document.getElementById(id).name =='selectDept'){
-		socket.emit('selectDept', theSelect[theSelect.selectedIndex].value);
-	}else if (document.getElementById(id).name =='selectCommune'){
-		socket.emit('selectCommune', theSelect[theSelect.selectedIndex].value);
-	}	
+		socket.emit('selectDept', select.options[select.selectedIndex].text);
+		viderSelect();
+		
+		var oSelect = document.getElementById('selectDept');
+    	oSelect.options[0] = new Option(texte, texte);
 
+	}else if (document.getElementById(id).name =='selectCommune'){
+		socket.emit('selectCommune', select.options[select.selectedIndex].text);
+		viderSelect();
+		
+		var oSelect = document.getElementById('selectCommune');
+    	oSelect.options[0] = new Option(texte, texte);
+
+	}	
 }
 window.onload = function() {
     requete();
@@ -100,32 +118,61 @@ socket.on('resultatRequeteToutesLesCommunes', function(x) {
 
 socket.on('resultatRequeteDepartement_Region',function(x){
 	notification(x,'dept');
+	addOptions('selectDept', 'Dept', requeteDept); 
 });
 
 socket.on('resultatRequeteCommunes_Region',function(x){
-	resultatRequeteCommunes_Region =x;
-
+	notification(x,'communes');
+	addOptions('selectCommune', 'Commune', requeteCommune);
 });
 
 socket.on('resultatRequeteCommunes_Departement',function(x){
-	resultatRequeteCommunes_Departement = x;
-
+	notification(x,'communes');
+	addOptions('selectCommune', 'Commune', requeteCommune);
 });
 
 socket.on('resultatRequeteRegion_Departement',function(x){
-	resultatRequeteRegion_Departement = x;
-
+	notification(x,'regions');
+	addOptions('selectRegion', 'regions', requeteToutesRegions);
 });
 
 socket.on('resultatRequeteRegion_Commune',function(x){
-	resultatRequeteRegion_Commune = x;
-
+	notification(x,'regions');
+	addOptions('selectRegion', 'regions', requeteToutesRegions);
 });
 
 socket.on('resultatRequeteDepartement_Commune',function(x){
 	notification(x,'dept');
-
+	addOptions('selectDept', 'Dept', requeteDept);
 });
+
+
+
+function viderSelect(){
+	var oSelect = document.getElementById('selectRegion');
+    opts = oSelect.getElementsByTagName('option');
+ 
+	// Ne garde que la première option
+	// (pour tout supprimer, remplacer 1 par 0
+	// dans les deux lignes)
+	while(opts[0]) {
+	    oSelect.removeChild(opts[0]);
+	}
+
+	oSelect = document.getElementById('selectDept');
+    opts = oSelect.getElementsByTagName('option');
+ 
+	while(opts[0]) {
+	    oSelect.removeChild(opts[0]);
+	}
+
+	oSelect = document.getElementById('selectCommune');
+    opts = oSelect.getElementsByTagName('option');
+
+	while(opts[0]) {
+	    oSelect.removeChild(opts[0]);
+	}
+}
 
 /* API Option
 optionElementReference
@@ -160,7 +207,7 @@ function addOptions(id, genese, req){
 		List[i]=(elOption[i]);
 	}
 
-    document.getElementById(genese).disabled="false";
+   // document.getElementById(genese).disabled="false";
 }
 
 function initialize(){
@@ -184,17 +231,17 @@ initialize();
     		<form  name="frmSearchType">
     		<!-- Formulaire de navigation dans les donnees "Region"-->
     		<h3>Régions</h3>
-			<span>Parmi les différentes Régions :</span> <select id="selectRegion" onchange="envoieChoix('selectRegion');">
+			<span>Parmi les différentes Régions :</span> <select name = "selectRegion" id="selectRegion" onchange="envoieChoix('selectRegion');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></br>
     		<!-- Formulaire de navigation dans les donnees "Dept"-->
     		<h3>Départements</h3>
-			<span>Parmi les différents Départements :</span> <select id="selectDept" onchange="envoieChoix('selectDept');">
+			<span>Parmi les différents Départements :</span> <select name = "selectDept" id="selectDept" onchange="envoieChoix('selectDept');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></br>
     		<!-- Formulaire de navigation dans les donnees "Communes"-->
     		<h3>Communes</h3>
-			<span>Parmi les différentes Communes :</span> <select id="selectCommune" onchange="envoieChoix('selectCommune');">
+			<span>Parmi les différentes Communes :</span> <select name = "selectCommune" id="selectCommune" onchange="envoieChoix('selectCommune');">
 				<option value="" selected="selected">-- Faites votre choix --</option>
 			</select></form></br>
     	</div>
