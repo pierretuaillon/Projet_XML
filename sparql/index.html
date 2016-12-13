@@ -3,13 +3,12 @@
 	<script>
 		function getLongLatAndImageFromREF(ref) {
 
-			var query = "SELECT ?image ?longlat ? WHERE { ?subject wdt:P380 '"
-					+ ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
+			var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '"+ ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
 
 			var url = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
 
 			var concat = url + "?query=" + query;
-
+			document.write("<p>"+ concat + "</p>");
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", concat, false);
 			xmlHttp.send(null);
@@ -22,13 +21,11 @@
 
 			var repXML = getLongLatAndImageFromREF(ref);
 			var image = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[0].getElementsByTagName("uri")[0].innerHTML;
-			var point = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[1].getElementsByTagName("literal")[0].innerHTML; 
-			var longLat = point.replace("Point\(", "").replace("\)", "").split(" ");
 
 			return image;
 		}
 
-		var ref = "PA00078014";
+		var ref = "PA00116131";
 		var imageURL = giveImageURL(ref);
 		document.write("<p> imageURL : "+ imageURL +"</p>");
 	</script>
