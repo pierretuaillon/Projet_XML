@@ -1,7 +1,7 @@
 <html>
   <head>
 	<script>
-		function myFunction(ref) {
+		function getLongLatAndImageFromREF(ref) {
 			
 		
 			var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '"
@@ -20,7 +20,7 @@
 		}
 		
 		var ref = "PA00078014";
-		var repXML = myFunction(ref);
+		var repXML = getLongLatAndImageFromREF(ref);
 		document.write("<p> hola </p>");
 		document.write("<p> image : "+ repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[0].getElementsByTagName("uri")[0].innerHTML  +"</p>");
 		document.write("<p> latlong : "+ repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[1].getElementsByTagName("literal")[0].innerHTML  +"</p>");

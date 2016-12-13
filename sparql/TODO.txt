@@ -1,0 +1,6 @@
+Pour le SPARQL :
+
+	Pour la map:
+		- Si l'adresse est égal à "", null ou undefined, on prend l'adresse sparql (ou peut etre tout le tmps osef)
+		
+	Pour l'image, on nettoie le "Point (x, y)" pour avoir uniquement x et y. Et on le met dans un <img>.
