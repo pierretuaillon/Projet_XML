@@ -57,13 +57,26 @@ var resultatRequeteCommunes_Region = [];
 // resultat Communes avec departement
 var resultatRequeteCommunes_Departement = [];
 
+//compte le nb d'occurences par region
+var resultatRequeteStatsRegions = [];
+
 //Requêtes
 var requeteToutesLesRegions = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/REG return $x/REG)';
 var requeteTousLesDepartements = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/DPT return $x/DPT)';
 var requeteToutesLesCommunes = 'distinct-values(for $x in doc("merimee-MH.xml")//csv_data/row order by $x/COM return $x/COM)';
+var requeteStatsRegions = 'for $x in doc("merimee-MH.xml")//csv_data/row group by $group := $x/REG return (count($x/REG),$group)';
 
 
 var query;
+//requete stats regions
+query = connection.query(requeteStatsRegions);
+query.on("error", function(err) {
+    console.log("An statsRegions error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteStatsRegions.push(item);
+});
+//requete toutes regions
 query = connection.query(requeteToutesLesRegions);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
@@ -72,6 +85,7 @@ query.each(function(item, hits, offset) {
     resultatRequeteToutesLesRegions.push(item);
 });
 
+//requete tous dept
 query = connection.query(requeteTousLesDepartements);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
@@ -80,6 +94,7 @@ query.each(function(item, hits, offset) {
     resultatRequeteTousLesDepartements.push(item);
 });
 
+//requete toutes communes
 query = connection.query(requeteToutesLesCommunes);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
@@ -125,6 +140,10 @@ listener.sockets.on('connection', function (socket) {
 		listener.sockets.emit('resultatRequeteToutesLesCommunes', resultatRequeteToutesLesCommunes);
 		listener.sockets.emit('resultatRequete2', resultatRequeteToutesLesRegions);
 		
+	});
+	socket.on('statsRegions', function(msg) {
+		console.log(msg);
+		listener.sockets.emit('statsRegions', resultatRequeteStatsRegions);
 	});
 
 	socket.on('selectRegion', function(NomRegion){
