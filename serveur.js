@@ -88,6 +88,8 @@ var requeteStatsAutrs = 'for $x in doc("merimee-MH.xml")//csv_data/row group by 
 
 
 var query;
+
+
 //requete stats regions
 query = connection.query(requeteStatsRegions);
 query.on("error", function(err) {
@@ -120,14 +122,66 @@ query.on("error", function(err) {
 query.each(function(item, hits, offset) {
     resultatRequeteStatsEtuds[offset]=item;
 });
-
-//requete tous dept
-query = connection.query(requeteTousLesAuteurs);
+//requete toutes regions
+query = connection.query(requeteStatsStats);
 query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
     resultatRequeteStatsStats[offset]=item;
+});
+//requete toutes regions
+query = connection.query(requeteStatsAutrs);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteStatsAutrs[offset]=item;
+});
+
+//requete tous
+query = connection.query(requeteToutesLesCommunes);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteToutesLesCommunes[offset]=item;
+});
+
+//requete tous
+query = connection.query(requeteTousLesDepartements);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteTousLesDepartements[offset]=item;
+});
+
+//requete tous
+query = connection.query(requeteToutesLesRegions);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteToutesLesRegions[offset]=item;
+});
+
+//requete tous
+query = connection.query(requeteToutesLesEtudes);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteToutesLesEtudes[offset]=item;
+});
+
+//requete tous
+query = connection.query(requeteTousLesAuteurs);
+query.on("error", function(err) {
+    console.log("An error occurred: " + err);
+});
+query.each(function(item, hits, offset) {
+    resultatRequeteTousLesAuteurs[offset]=item;
 });
 
 //requete toutes communes
@@ -136,7 +190,7 @@ query.on("error", function(err) {
     console.log("An error occurred: " + err);
 });
 query.each(function(item, hits, offset) {
-    resultatRequeteStatsAutrs[offset]=item;
+    resultatRequeteTousLesStatuts[offset]=item;
 });
 
 

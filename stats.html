@@ -79,56 +79,56 @@ socket.on('resultatRequeteTousLesStatuts', function(tab) {
 function genererRegions() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsRegions.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsRegions[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsRegions[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsRegions[i]||0)+' en région '+tabRegions[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsRegions)/500;
+	for(i = 1 ; i+1 < tabCountsRegions.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect style="fill:rgb(100,50,255);" width="'+(tabCountsRegions[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsRegions[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsRegions[i]||0)+' en région '+tabRegions[i]+'</text>  </g>';
 		py+=20;
 	}
-	//document.getElementById("test").innerHTML=tabCountsRegions+'<br>'+tabRegions;
 }
 function genererDepts() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsDepts.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsDepts[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsDepts[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsDepts[i]||0)+' dans le département '+tabDepts[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsDepts)/500;
+	for(i = 1 ; i+1 < tabCountsDepts.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect style="fill:rgb(100,50,255);"  width="'+(tabCountsDepts[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsDepts[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsDepts[i]||0)+' dans le département '+tabDepts[i]+'</text>  </g>';
 		py+=20;
 	}
-	//document.getElementById("test").innerHTML='counts: '+tabCountsDepts+'<br>tab: '+tabDepts;
 }
 function genererCommunes() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsCommunes.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsCommunes[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsCommunes[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsCommunes[i]||0)+' dans la commune '+tabCommunes[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsCommunes)/500;
+	for(i = 1 ; i+1 < tabCountsCommunes.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect  style="fill:rgb(100,50,255);" width="'+(tabCountsCommunes[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsCommunes[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsCommunes[i]||0)+' dans la commune '+tabCommunes[i]+'</text>  </g>';
 		py+=20;
 	}
-	//document.getElementById("test").innerHTML=tabCountsCommunes+'<br>tab: '+tabCommunes;
 }
 function genererEtudes() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsEtuds.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsEtuds[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsEtuds[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsEtuds[i]||0)+' sont du type d\'étude '+tabEtuds[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsEtuds)/500;
+	for(i = 1 ; i+1 < tabCountsEtuds.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect  style="fill:rgb(100,50,255);" width="'+(tabCountsEtuds[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsEtuds[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsEtuds[i]||0)+' sont du type d\'étude '+tabEtuds[i]+'</text>  </g>';
 		py+=20;
 	}
-	document.getElementById("test").innerHTML=tabCountsEtuds+'<br>tab: '+tabEtuds;
 }
 function genererStatuts() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsStats.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsStats[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsStats[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsStats[i]||0)+' ont le statut '+tabStats[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsStats)/500;
+	for(i = 1 ; i+1 < tabCountsStats.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect style="fill:rgb(100,50,255);"  width="'+(tabCountsStats[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsStats[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsStats[i]||0)+' ont le statut '+tabStats[i]+'</text>  </g>';
 		py+=20;
 	}
-	document.getElementById("test").innerHTML=tabCountsStats+'<br>tab: '+tabStats;
 }
 function genererAuteurs() {
 	var py=10;
 	document.getElementById("graphique").innerHTML='';
-	for(i = 0 ; i+1 < tabCountsAutrs.length ; i++) {
-		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect width="'+(tabCountsAutrs[i]/10)+'" height="19" y="'+py+'"></rect> <text width="1000" x="'+(tabCountsAutrs[i]/10+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsAutrs[i]||0)+' de '+tabAutrs[i]+'</text>  </g>';
+	var maxWidth = Math.max.apply(Math,tabCountsAutrs)/500;
+	for(i = 1 ; i+1 < tabCountsAutrs.length ; i++) {
+		document.getElementById("graphique").innerHTML+='<g class="bar">    <rect  style="fill:rgb(100,50,255);" width="'+(tabCountsAutrs[i]/maxWidth)+'" height="19" y="'+py+'"></rect> <text x="'+(tabCountsAutrs[i]/maxWidth+10)+'" y="'+(py+10)+'" dy=".35em">'+(tabCountsAutrs[i]||0)+' de '+(tabAutrs[i]||'inconnu')+'</text>  </g>';
 		py+=20;
 	}
-	document.getElementById("test").innerHTML=tabCountsAutrs+'<br>tab: '+tabAutrs;
 }
 
 
@@ -143,7 +143,7 @@ function genererAuteurs() {
 <button onclick="genererAuteurs()">Générer statistiques par auteur</button>
 
 
-<p id="test">f</p>
+<p id="test"></p>
 
 <figure><svg id="graphique" class="chart" width="100%" height="100%" aria-labelledby="title" role="img"></svg></figure>
 
