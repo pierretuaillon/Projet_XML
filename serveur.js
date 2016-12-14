@@ -300,15 +300,15 @@ listener.sockets.on('connection', function (socket) {
     		resultatRequeteCommunes_Region.push(item);
 		});
 
-		var requeteRegion_Titre = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/TICO,20';
-		var requeteRegion_Ref = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REF,20';
-		var requeteRegion_Etud = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ETUD,20';
-		var requeteRegion_Reg = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REG,20';
-		var requeteRegion_Dept = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/DEPT,20';
-		var requeteRegion_Com = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/COM,20';
-		var requeteRegion_Insee = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/INSEE,20';
-		var requeteRegion_Adrs = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ADRS,20';
-		var requeteRegion_Autr = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/AUTR,20';
+		var requeteRegion_Titre = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/TICO';
+		var requeteRegion_Ref = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REF';
+		var requeteRegion_Etud = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ETUD';
+		var requeteRegion_Reg = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/REG';
+		var requeteRegion_Dept = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/DEPT';
+		var requeteRegion_Com = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/COM';
+		var requeteRegion_Insee = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/INSEE';
+		var requeteRegion_Adrs = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ADRS';
+		var requeteRegion_Autr = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/AUTR';
 /*
 Titre du batiment
 REF :
@@ -321,7 +321,7 @@ TICO :
 ADRS :
 */
 		query = connection.query(requeteRegion_Titre);
-		resultatRequeteSelectRegion_Titre = [];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -330,14 +330,14 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Ref);
-		resultatRequeteSelectRegion_Ref=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
 		query.each(function(item, hits, offset) {
     		resultatRequeteSelectRegion_Ref.push(item);
 		});
-		resultatRequeteSelectRegion_Etud=[];
+		
 		query = connection.query(requeteRegion_Etud);
 		
 		query.on("error", function(err) {
@@ -348,7 +348,7 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Reg);
-		resultatRequeteSelectRegion_Reg=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -357,7 +357,7 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Dept);
-		resultatRequeteSelectRegion_Dept=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -366,7 +366,7 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Com);
-		resultatRequeteSelectRegion_Com=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -375,7 +375,7 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Insee);
-		resultatRequeteSelectRegion_Insee=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -384,7 +384,7 @@ ADRS :
 		});
 		
 		query = connection.query(requeteRegion_Adrs);
-		resultatRequeteSelectRegion_Adrs=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
@@ -392,7 +392,7 @@ ADRS :
     		resultatRequeteSelectRegion_Adrs.push(item);
 		});
 		query = connection.query(requeteRegion_Autr);
-		resultatRequeteSelectRegion_Autr=[];
+		
 		query.on("error", function(err) {
     		console.log("An error occurred: " + err);
 		});
