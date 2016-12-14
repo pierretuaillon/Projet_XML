@@ -48,6 +48,11 @@ function notification(content, requete){
 //fonction appelé au changement dans les listes
 function envoieChoix(id){
 	//select = document.getElementById(id);
+	var node = document.getElementById("listeResultats");
+	while (node.firstChild) {
+		node.removeChild(node.firstChild);
+	}
+	
 	var select, texte;
 	select = document.getElementById(id);
 	texte = select.options[select.selectedIndex].text;
