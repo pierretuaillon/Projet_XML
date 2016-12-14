@@ -73,7 +73,7 @@ var resultatRequeteSelectRegion_Dept = [];
 var resultatRequeteSelectRegion_Com = [];
 var resultatRequeteSelectRegion_Insee = [];
 var resultatRequeteSelectRegion_Adrs =[];
-
+var resultatRequeteSelectRegion_Autr = [];
 //stats : nb d'occurences
 var resultatRequeteStatsRegions = [];
 var resultatRequeteStatsDepartements = [];
@@ -275,6 +275,9 @@ listener.sockets.on('connection', function (socket) {
 
 	socket.on('selectRegion', function(NomRegion){
 
+	
+		console.log('requete recherche pour la region '+NomRegion);
+	
 		var requeteDepartement_Region = 'distinct-values( for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" order by $x/DPT return $x/DPT)';
 
 		query = connection.query(requeteDepartement_Region);
@@ -305,6 +308,7 @@ listener.sockets.on('connection', function (socket) {
 		var requeteRegion_Com = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/COM';
 		var requeteRegion_Insee = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/INSEE';
 		var requeteRegion_Adrs = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/ADRS';
+		var requeteRegion_Autr = 'for $x in doc("merimee-MH.xml")//csv_data/row where $x/REG="'+ NomRegion +'" return $x/AUTR';
 /*
 Titre du batiment
 REF :
@@ -387,6 +391,14 @@ ADRS :
 		query.each(function(item, hits, offset) {
     		resultatRequeteSelectRegion_Adrs.push(item);
 		});
+		query = connection.query(requeteRegion_Autr);
+		
+		query.on("error", function(err) {
+    		console.log("An error occurred: " + err);
+		});
+		query.each(function(item, hits, offset) {
+    		resultatRequeteSelectRegion_Autr.push(item);
+		});
 		
 		
 		listener.sockets.emit('resultatRequeteSelectRegion_Titre', 	resultatRequeteSelectRegion_Titre);
@@ -397,6 +409,7 @@ ADRS :
 		listener.sockets.emit('resultatRequeteSelectRegion_Com', 	resultatRequeteSelectRegion_Com);	
 		listener.sockets.emit('resultatRequeteSelectRegion_Insee', 	resultatRequeteSelectRegion_Insee);	
 		listener.sockets.emit('resultatRequeteSelectRegion_Adrs', 	resultatRequeteSelectRegion_Adrs);	
+		listener.sockets.emit('resultatRequeteSelectRegion_Autr', 	resultatRequeteSelectRegion_Autr);	
 
 
 		listener.sockets.emit('resultatRequeteDepartement_Region', resultatRequeteDepartement_Region);

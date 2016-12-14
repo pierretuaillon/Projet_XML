@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Affichage de la map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGLXZ7ZL9F3t3GlKSAtVh7OdeCidcG4jA"></script>
+    <script>
+
+      <!-- permet de récupérer les informations GET -->
+      function getParameterByName(name, url) {
+          if (!url) {
+            url = window.location.href;
+          }
+          name = name.replace(/[\[\]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+              results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
+
+
+        function getLongLatAndImageFromREF(ref) {
+            
+            var query = "SELECT ?image ?longlat WHERE { ?subject wdt:P380 '" + ref + "'. ?subject wdt:P18 ?image . ?subject wdt:P625 ?longlat}";
+
+            var url = "https://query.wikidata.org/bigdata/namespace/wdq/sparql";
+
+            var concat = url + "?query=" + query;
+
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", concat, false);
+            xmlHttp.send(null);
+
+            return xmlHttp.responseXML;
+        }
+
+        var ref = getParameterByName('REF');
+        var repXML = getLongLatAndImageFromREF(ref);
+        var point = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[1].getElementsByTagName("literal")[0].innerHTML; 
+        var longLat = point.replace("Point\(", "").replace("\)", "").split(" ");
+
+        var map;
+        function initialize() {
+          var mapOptions = {
+            zoom: 12,
+            center: {lat: Number(longLat[1]), lng: Number(longLat[0])}
+          };
+          map = new google.maps.Map(document.getElementById('map'),
+              mapOptions);
+
+          var marker = new google.maps.Marker({
+            position: {lat: Number(longLat[1]), lng: Number(longLat[0])},
+            map: map
+          });
+
+          var infowindow = new google.maps.InfoWindow({
+            content: '<p>Marker Location:' + marker.getPosition() + '</p>'
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+</html>

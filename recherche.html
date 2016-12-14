@@ -52,24 +52,27 @@ function envoieChoix(id){
 	select = document.getElementById(id);
 	texte = select.options[select.selectedIndex].text;
 
-	alert("choix :" + texte);
+	//alert("choix :" + texte);
 	if (document.getElementById(id).name == 'selectRegion'){
 		socket.emit('selectRegion', select.options[select.selectedIndex].text);
-		viderSelect();
+		viderSelect('selectDept');
+		viderSelect('selectCommune');
 		
 		var oSelect = document.getElementById('selectRegion');
     	oSelect.options[0] = new Option(texte, texte);
    
 	}else if (document.getElementById(id).name =='selectDept'){
 		socket.emit('selectDept', select.options[select.selectedIndex].text);
-		viderSelect();
+		viderSelect('selectRegion');
+		viderSelect('selectCommune');
 		
 		var oSelect = document.getElementById('selectDept');
     	oSelect.options[0] = new Option(texte, texte);
 
 	}else if (document.getElementById(id).name =='selectCommune'){
 		socket.emit('selectCommune', select.options[select.selectedIndex].text);
-		viderSelect();
+		viderSelect('selectRegion');
+		viderSelect('selectDept');
 		
 		var oSelect = document.getElementById('selectCommune');
     	oSelect.options[0] = new Option(texte, texte);
@@ -81,11 +84,11 @@ window.onload = function() {
 }
 	
 function requete() {
-	socket.emit('called', 'wesh envoie moi les regions et tt stp');
+	socket.emit('called', 'client demande toutes les regions dept et communes');
 }	
 function requete2() {
 	document.getElementById("resultat").innerHTML="requete ! : ";
-	socket.emit('requete2', 'wesh renvoie moi tout ça stp');
+	socket.emit('requete2', 'renvoi');
 }
 
 // recuperation des messages "Region" du socket serveur
@@ -163,36 +166,78 @@ socket.on('resultatRequeteSelectRegion_Titre',function(x){
 
 socket.on('resultatRequeteSelectRegion_Ref',function(x){
 	var i;
-	for(i=0;i<x.length&&x<5;i++){
+	for(i=0;i<x.length;i++){
 		var div = document.getElementById("divRes"+i);
-		//div.innerHTML+="<br><img src='"+giveImageURL(x[i])+"'/><br>Ref: "+x[i];
-		div.innerHTML+="<br>"+giveImageURL(x[i]);
+		var content = "<br><a href=\"./google_map.html?REF="+x[i].replace("<REF>","").replace("</REF>","")+"\" target=\"_blank\">MAP</a><br><img src=\""+giveImageURL(x[i].replace("<REF>","").replace("</REF>",""))+"\" ><br>Ref : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Etud',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Type d'étude : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Reg',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Region : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Dept',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Département : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Com',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Commune : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Insee',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>INSEE : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Adrs',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Adresse : "+x[i];
+		div.innerHTML+=content;
+	}
+});
+socket.on('resultatRequeteSelectRegion_Autr',function(x){
+	var i;
+	for(i=0;i<x.length;i++){
+		var div = document.getElementById("divRes"+i);
+		var content = "<br>Auteur : "+x[i];
+		div.innerHTML+=content;
 	}
 });
 
 
 
-function viderSelect(){
-	var oSelect = document.getElementById('selectRegion');
+function viderSelect(id){
+	var oSelect = document.getElementById(id);
     opts = oSelect.getElementsByTagName('option');
  
 	// Ne garde que la première option
 	// (pour tout supprimer, remplacer 1 par 0
 	// dans les deux lignes)
-	while(opts[0]) {
-	    oSelect.removeChild(opts[0]);
-	}
-
-	oSelect = document.getElementById('selectDept');
-    opts = oSelect.getElementsByTagName('option');
- 
-	while(opts[0]) {
-	    oSelect.removeChild(opts[0]);
-	}
-
-	oSelect = document.getElementById('selectCommune');
-    opts = oSelect.getElementsByTagName('option');
-
 	while(opts[0]) {
 	    oSelect.removeChild(opts[0]);
 	}
@@ -212,6 +257,8 @@ A boolean that sets the option's selected state, the default is false (not selec
 */
 
 function addOptions(id, genese, req){
+
+	viderSelect(id);
 
 	new Option("Text","Value", "defaultSelected true / false", "selected true / false");
 
@@ -255,9 +302,12 @@ function addOptions(id, genese, req){
 		
 
 			var repXML = getLongLatAndImageFromREF(ref);
-			var image = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0].getElementsByTagName("result")[0].getElementsByTagName("binding")[0].getElementsByTagName("uri")[0].innerHTML;
-
-			return image;
+			var image = repXML.getElementsByTagName("sparql")[0].getElementsByTagName("results")[0];
+			if(image.getElementsByTagName("result").length==0)
+				return '';
+			else{
+				return image.getElementsByTagName("result")[0].getElementsByTagName("binding")[0].getElementsByTagName("uri")[0].innerHTML;
+			}
 		}
 
 		
@@ -299,38 +349,12 @@ initialize();
     	</div>
     </div>
 
-	<br><p id="test">resSelect : </p><br>
 	
 	<div class ="listeCommunue">
 		<div id="listeResultats" class = "row">
-			<div class = "col-md-4">
-
-				<div class="thumbnail">
-	        		<img src="/img/batiment.jpg" alt="img batiment" class="imgBatiment"/>
-
-					<center><h1> Titre du batiment </h1></center>
-
-					<center>
-						<h6> REF : </h6>
-						<h6> ETUD : </h6>
-						<h6> REG : </h6>
-						<h6> DEPT : </h6>
-						<h6> COM : </h6>
-						<h6> INSEE : </h6>
-						<h6> TICO : </h6>
-						<h6> ADRS : </h6>
-					</center>
-					<span class="bouton" id="bouton_texte" onclick="javascript:afficher_cacher('texte');">Afficher le texte</span>
-				    <div id="texte" class="texte">
-				        <!-- Texte à cacher ici -->
-
-				    </div>
-				</div>
-			</div>
 		</div>
 	</div>    
 </div>
-<p id="resultat">vide<br></p>
 <p id="vide"><br><br><br><br></p>
 <script type="text/javascript" src="__footer.js"></script>
 
